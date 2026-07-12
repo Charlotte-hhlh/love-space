@@ -1,0 +1,1294 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>💕 我们的恋爱空间</title>
+    <style>
+        /* ========== 全局重置 ========== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, "PingFang SC", "Helvetica Neue", sans-serif;
+            background: #fdf6f7;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 20px 16px 40px;
+        }
+
+        .app-container {
+            max-width: 420px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 40px;
+            padding: 28px 24px 32px;
+            box-shadow: 0 20px 60px rgba(255, 150, 180, 0.20), 0 8px 24px rgba(255, 120, 160, 0.10);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .date-section {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .date-main {
+            font-size: 18px;
+            font-weight: 600;
+            color: #3d2c33;
+        }
+
+        .date-weekday {
+            font-size: 13px;
+            color: #b58a95;
+            margin-top: 2px;
+        }
+
+        .days-counter {
+            background: linear-gradient(135deg, #ff9aae, #ffb6c9);
+            padding: 8px 18px;
+            border-radius: 30px;
+            color: #fff;
+            font-weight: 600;
+            font-size: 17px;
+            box-shadow: 0 6px 16px rgba(255, 150, 180, 0.35);
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .days-counter span {
+            font-size: 20px;
+            margin-right: 2px;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 20px;
+            background: rgba(255, 245, 247, 0.5);
+            border-radius: 16px;
+            padding: 4px;
+            border: 1px solid rgba(255, 200, 210, 0.15);
+        }
+
+        .nav-tab {
+            flex: 1;
+            padding: 10px 0;
+            border: none;
+            border-radius: 13px;
+            background: transparent;
+            font-size: 13px;
+            font-weight: 500;
+            color: #b58a95;
+            cursor: pointer;
+            transition: 0.3s;
+            font-family: inherit;
+        }
+
+        .nav-tab.active {
+            background: rgba(255, 255, 255, 0.7);
+            color: #3d2c33;
+            box-shadow: 0 2px 8px rgba(255, 150, 180, 0.15);
+        }
+
+        .nav-tab:active {
+            transform: scale(0.96);
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .section-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: #3d2c33;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-title .badge {
+            background: #ffb6c9;
+            color: #fff;
+            font-size: 11px;
+            border-radius: 20px;
+            padding: 0 10px;
+            height: 20px;
+            line-height: 20px;
+            font-weight: 500;
+        }
+
+        .add-todo-area {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        .add-todo-area input {
+            flex: 1;
+            min-width: 120px;
+            padding: 10px 14px;
+            border-radius: 16px;
+            border: 1.5px solid #f0dce2;
+            background: rgba(255, 255, 255, 0.6);
+            font-size: 14px;
+            outline: none;
+            font-family: inherit;
+            color: #3d2c33;
+        }
+
+        .add-todo-area input:focus {
+            border-color: #ff9aae;
+            background: #fff;
+        }
+
+        .add-todo-area input::placeholder {
+            color: #c8aeb8;
+        }
+
+        .add-todo-area select {
+            padding: 10px 12px;
+            border-radius: 16px;
+            border: 1.5px solid #f0dce2;
+            background: rgba(255, 255, 255, 0.6);
+            font-size: 13px;
+            outline: none;
+            color: #3d2c33;
+            font-family: inherit;
+            cursor: pointer;
+        }
+
+        .btn-add {
+            padding: 10px 20px;
+            border-radius: 16px;
+            border: none;
+            background: linear-gradient(135deg, #ff9aae, #ffb6c9);
+            color: #fff;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.2s;
+            font-family: inherit;
+            white-space: nowrap;
+        }
+
+        .btn-add:active {
+            transform: scale(0.95);
+        }
+
+        .todo-list {
+            background: rgba(255, 245, 247, 0.4);
+            border-radius: 16px;
+            padding: 4px 0;
+            min-height: 60px;
+            border: 1px solid rgba(255, 200, 210, 0.15);
+        }
+
+        .todo-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 14px;
+            border-bottom: 1px solid rgba(255, 200, 210, 0.12);
+            gap: 10px;
+        }
+
+        .todo-item:last-child {
+            border-bottom: none;
+        }
+
+        .todo-checkbox {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            border: 2px solid #e8c8d0;
+            flex-shrink: 0;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fff;
+        }
+
+        .todo-checkbox:hover {
+            border-color: #ff9aae;
+        }
+
+        .todo-checkbox.done {
+            background: #ff9aae;
+            border-color: #ff9aae;
+        }
+
+        .todo-checkbox.done::after {
+            content: "✓";
+            color: #fff;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .todo-text {
+            flex: 1;
+            font-size: 14px;
+            color: #3d2c33;
+            word-break: break-word;
+        }
+
+        .todo-text.done-text {
+            text-decoration: line-through;
+            color: #b58a95;
+        }
+
+        .todo-tag {
+            font-size: 10px;
+            background: #f0e0e5;
+            padding: 2px 10px;
+            border-radius: 20px;
+            color: #7a5a66;
+            font-weight: 500;
+            flex-shrink: 0;
+        }
+
+        .todo-delete {
+            background: none;
+            border: none;
+            color: #d4b8c2;
+            cursor: pointer;
+            font-size: 16px;
+            padding: 0 4px;
+            flex-shrink: 0;
+            transition: 0.2s;
+        }
+
+        .todo-delete:active {
+            transform: scale(1.2);
+            color: #ff6b8a;
+        }
+
+        .todo-empty {
+            padding: 20px 16px;
+            text-align: center;
+            color: #b58a95;
+            font-size: 14px;
+        }
+
+        .loading-tip {
+            padding: 20px 16px;
+            text-align: center;
+            color: #b58a95;
+            font-size: 14px;
+        }
+
+        .matrix-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .quadrant {
+            background: rgba(255, 245, 247, 0.4);
+            border-radius: 16px;
+            padding: 12px 14px;
+            min-height: 100px;
+            border: 1px solid rgba(255, 200, 210, 0.15);
+        }
+
+        .quadrant-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: #7a5a66;
+            margin-bottom: 8px;
+        }
+
+        .quadrant-title .emoji {
+            margin-right: 4px;
+        }
+
+        .quadrant-item {
+            font-size: 13px;
+            color: #3d2c33;
+            padding: 4px 0;
+            border-bottom: 1px dashed rgba(255, 200, 210, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .quadrant-item:last-child {
+            border-bottom: none;
+        }
+
+        .quadrant-item .q-dot {
+            font-size: 8px;
+            color: #ff9aae;
+        }
+
+        .quadrant-empty {
+            font-size: 12px;
+            color: #c8aeb8;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .calendar-header button {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: #b58a95;
+            padding: 4px 12px;
+        }
+
+        .calendar-header .month-year {
+            font-size: 16px;
+            font-weight: 600;
+            color: #3d2c33;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+            text-align: center;
+        }
+
+        .calendar-grid .weekday {
+            font-size: 11px;
+            color: #b58a95;
+            padding: 6px 0;
+            font-weight: 500;
+        }
+
+        .calendar-grid .day {
+            padding: 8px 0;
+            border-radius: 12px;
+            font-size: 14px;
+            color: #3d2c33;
+            cursor: pointer;
+            transition: 0.2s;
+            position: relative;
+        }
+
+        .calendar-grid .day:active {
+            transform: scale(0.92);
+        }
+
+        .calendar-grid .day.today {
+            background: #ff9aae;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .calendar-grid .day.has-todo::after {
+            content: "";
+            position: absolute;
+            bottom: 4px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: #ff9aae;
+        }
+
+        .calendar-grid .day.today.has-todo::after {
+            background: #fff;
+        }
+
+        .calendar-grid .day.other-month {
+            color: #d4b8c2;
+        }
+
+        .calendar-grid .day.selected {
+            background: #f0e0e5;
+            font-weight: 600;
+        }
+
+        /* ========== 相册样式 ========== */
+        .photo-upload-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 30px 20px;
+            border: 2px dashed #f0dce2;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            background: rgba(255, 245, 247, 0.3);
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .photo-upload-area:active {
+            transform: scale(0.98);
+        }
+
+        .photo-upload-area .icon {
+            font-size: 40px;
+            margin-bottom: 8px;
+        }
+
+        .photo-upload-area .text {
+            color: #b58a95;
+            font-size: 14px;
+        }
+
+        .photo-upload-area input {
+            display: none;
+        }
+
+        .photo-timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            max-height: 500px;
+            overflow-y: auto;
+            padding-bottom: 8px;
+        }
+
+        .photo-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .photo-group .group-date {
+            font-size: 13px;
+            font-weight: 600;
+            color: #b58a95;
+            padding-left: 12px;
+            border-left: 3px solid #ffb6c9;
+        }
+
+        .photo-card {
+            display: flex;
+            gap: 14px;
+            padding: 12px;
+            background: rgba(255, 245, 247, 0.5);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 200, 210, 0.12);
+            align-items: center;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .photo-card:active {
+            transform: scale(0.98);
+        }
+
+        .photo-card .thumb {
+            width: 70px;
+            height: 70px;
+            border-radius: 12px;
+            background: #f0e0e5;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            overflow: hidden;
+        }
+
+        .photo-card .thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .photo-card .info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .photo-card .info .caption {
+            font-size: 14px;
+            color: #3d2c33;
+            font-weight: 500;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .photo-card .info .caption-placeholder {
+            font-size: 14px;
+            color: #c8aeb8;
+            font-style: italic;
+        }
+
+        .photo-card .info .meta {
+            font-size: 11px;
+            color: #b58a95;
+            margin-top: 4px;
+        }
+
+        .photo-card .info .meta .who {
+            background: #f0e0e5;
+            padding: 1px 10px;
+            border-radius: 12px;
+            font-size: 10px;
+            color: #7a5a66;
+        }
+
+        .photo-delete-btn {
+            background: none;
+            border: none;
+            color: #d4b8c2;
+            cursor: pointer;
+            font-size: 16px;
+            padding: 4px 8px;
+            flex-shrink: 0;
+            transition: 0.2s;
+        }
+
+        .photo-delete-btn:active {
+            transform: scale(1.2);
+            color: #ff6b8a;
+        }
+
+        .photo-empty {
+            text-align: center;
+            padding: 30px 20px;
+            color: #b58a95;
+            font-size: 14px;
+        }
+
+        /* ========== 图片查看弹窗 ========== */
+        .lightbox-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            animation: fadeIn 0.3s;
+        }
+
+        .lightbox-overlay.show {
+            display: flex;
+        }
+
+        .lightbox-overlay img {
+            max-width: 100%;
+            max-height: 85vh;
+            border-radius: 16px;
+            object-fit: contain;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .lightbox-overlay .close-btn {
+            position: fixed;
+            top: 20px;
+            right: 24px;
+            color: #fff;
+            font-size: 32px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            opacity: 0.7;
+            transition: 0.3s;
+        }
+
+        .lightbox-overlay .close-btn:hover {
+            opacity: 1;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .footer-note {
+            text-align: center;
+            margin-top: 24px;
+            font-size: 11px;
+            color: #d4b8c2;
+            letter-spacing: 1px;
+            border-top: 1px solid rgba(255, 200, 210, 0.20);
+            padding-top: 18px;
+        }
+
+        /* ========== 日历快速添加待办 ========== */
+        .calendar-quick-add {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-top: 12px;
+        }
+
+        .calendar-quick-add input {
+            flex: 1;
+            min-width: 120px;
+            padding: 8px 12px;
+            border-radius: 12px;
+            border: 1.5px solid #f0dce2;
+            background: rgba(255, 255, 255, 0.6);
+            font-size: 13px;
+            outline: none;
+            font-family: inherit;
+            color: #3d2c33;
+        }
+
+        .calendar-quick-add input:focus {
+            border-color: #ff9aae;
+            background: #fff;
+        }
+
+        .calendar-quick-add input::placeholder {
+            color: #c8aeb8;
+        }
+
+        .calendar-quick-add select {
+            padding: 8px 10px;
+            border-radius: 12px;
+            border: 1.5px solid #f0dce2;
+            background: rgba(255, 255, 255, 0.6);
+            font-size: 12px;
+            outline: none;
+            color: #3d2c33;
+            font-family: inherit;
+            cursor: pointer;
+        }
+
+        .calendar-quick-add .btn-cal-add {
+            padding: 8px 16px;
+            border-radius: 12px;
+            border: none;
+            background: linear-gradient(135deg, #ff9aae, #ffb6c9);
+            color: #fff;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            font-family: inherit;
+            white-space: nowrap;
+        }
+
+        .calendar-quick-add .btn-cal-add:active {
+            transform: scale(0.95);
+        }
+
+        @media (max-width: 420px) {
+            .app-container { padding: 20px 16px 24px; }
+            .add-todo-area input { min-width: 80px; }
+            .add-todo-area select { padding: 10px 8px; font-size: 12px; }
+            .btn-add { padding: 10px 14px; font-size: 13px; }
+            .quadrant { min-height: 70px; padding: 10px 12px; }
+            .photo-card .thumb { width: 55px; height: 55px; }
+            .lightbox-overlay .close-btn { top: 40px; right: 20px; font-size: 28px; }
+            .calendar-quick-add input { min-width: 80px; }
+        }
+
+        @media (max-width: 380px) {
+            .days-counter { font-size: 14px; padding: 6px 14px; }
+            .add-todo-area { flex-direction: column; }
+            .add-todo-area input { min-width: unset; }
+            .matrix-grid { gap: 6px; }
+            .calendar-grid .day { font-size: 12px; padding: 6px 0; }
+            .calendar-quick-add { flex-direction: column; }
+            .calendar-quick-add input { min-width: unset; width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        <!-- ===== HEADER ===== -->
+        <div class="header">
+            <div class="date-section">
+                <div class="date-main" id="todayDate">加载中...</div>
+                <div class="date-weekday" id="todayWeekday">加载中...</div>
+            </div>
+            <div class="days-counter">
+                <span>❤️</span> 第 <span id="daysCount">??</span> 天
+            </div>
+        </div>
+
+        <!-- ===== 导航 ===== -->
+        <div class="nav-tabs" id="navTabs">
+            <button class="nav-tab active" data-page="page-todo">📋 待办</button>
+            <button class="nav-tab" data-page="page-matrix">🎯 四象限</button>
+            <button class="nav-tab" data-page="page-calendar">📅 日历</button>
+            <button class="nav-tab" data-page="page-photo">📷 相册</button>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- 待办 -->
+        <!-- ========================================================== -->
+        <div class="page active" id="page-todo">
+            <div class="add-todo-area">
+                <input type="text" id="todoInput" placeholder="写一件待办的事情..." />
+                <select id="todoTag">
+                    <option value="重要紧急">🔥 重要紧急</option>
+                    <option value="重要不紧急">🌱 重要不紧急</option>
+                    <option value="不重要紧急">⏰ 不重要紧急</option>
+                    <option value="不重要不紧急">☁️ 不重要不紧急</option>
+                </select>
+                <button class="btn-add" id="addBtn">➕ 添加</button>
+            </div>
+            <div class="section-title">
+                📋 今日待办
+                <span class="badge" id="todoCount">0</span>
+            </div>
+            <div class="todo-list" id="todoList">
+                <div class="loading-tip">⏳ 加载中...</div>
+            </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- 四象限 -->
+        <!-- ========================================================== -->
+        <div class="page" id="page-matrix">
+            <div class="section-title">🎯 四象限矩阵</div>
+            <div class="matrix-grid" id="matrixGrid">
+                <div class="quadrant" data-quadrant="1">
+                    <div class="quadrant-title"><span class="emoji">🔥</span>重要·紧急</div>
+                    <div id="q1-list"></div>
+                </div>
+                <div class="quadrant" data-quadrant="2">
+                    <div class="quadrant-title"><span class="emoji">🌱</span>重要·不紧急</div>
+                    <div id="q2-list"></div>
+                </div>
+                <div class="quadrant" data-quadrant="3">
+                    <div class="quadrant-title"><span class="emoji">⏰</span>不重要·紧急</div>
+                    <div id="q3-list"></div>
+                </div>
+                <div class="quadrant" data-quadrant="4">
+                    <div class="quadrant-title"><span class="emoji">☁️</span>不重要·不紧急</div>
+                    <div id="q4-list"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- 日历（含快速添加待办） -->
+        <!-- ========================================================== -->
+        <div class="page" id="page-calendar">
+            <div class="section-title">📅 日历</div>
+            <div id="calendarContainer">
+                <div class="calendar-header">
+                    <button id="prevMonth">‹</button>
+                    <span class="month-year" id="monthYear">2026年7月</span>
+                    <button id="nextMonth">›</button>
+                </div>
+                <div class="calendar-grid" id="calendarGrid"></div>
+                <div style="margin-top:16px;">
+                    <div class="section-title" style="font-size:13px;">📌 <span id="calendarSelectedDateLabel">选中日期</span> 的待办</div>
+                    <div class="todo-list" id="calendarTodoList">
+                        <div class="todo-empty">点击日期查看待办</div>
+                    </div>
+                    <!-- 快速添加待办 -->
+                    <div class="calendar-quick-add">
+                        <input type="text" id="calendarTodoInput" placeholder="快速添加待办..." />
+                        <select id="calendarTodoTag">
+                            <option value="重要紧急">🔥 重要紧急</option>
+                            <option value="重要不紧急">🌱 重要不紧急</option>
+                            <option value="不重要紧急">⏰ 不重要紧急</option>
+                            <option value="不重要不紧急">☁️ 不重要不紧急</option>
+                        </select>
+                        <button class="btn-cal-add" id="calendarAddBtn">➕ 添加</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- 相册 -->
+        <!-- ========================================================== -->
+        <div class="page" id="page-photo">
+            <div class="section-title">📷 时光相册</div>
+            <div class="photo-upload-area" id="photoUploadArea">
+                <div class="icon">📸</div>
+                <div class="text">点击上传照片</div>
+                <input type="file" id="photoInput" accept="image/*" multiple />
+            </div>
+            <div class="photo-timeline" id="photoTimeline">
+                <div class="photo-empty">还没有照片，记录你们的时刻吧 💕</div>
+            </div>
+        </div>
+
+        <div class="footer-note">💕 只属于我们的恋爱空间</div>
+    </div>
+
+    <!-- ===== 图片查看弹窗 ===== -->
+    <div class="lightbox-overlay" id="lightbox" onclick="closeLightbox()">
+        <button class="close-btn" onclick="closeLightbox()">✕</button>
+        <img id="lightboxImage" src="" alt="查看图片" />
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js">
+    </script>
+
+    <script>
+        // ============================================================
+        //  🔑 修改这三行！！！
+        // ============================================================
+        var SUPABASE_URL = 'https://fsmgeesifwqfhpdndzmg.supabase.co';
+        var SUPABASE_KEY = 'sb_publishable_t2AMEoq4SSfwXaGUSQ6opA_UBUuqwfs';
+        var START_DATE = '2026-06-10';
+
+        // ============================================================
+        //  初始化
+        // ============================================================
+        var supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        function formatDate(d) {
+            return d.getFullYear() + '年' + String(d.getMonth() + 1).padStart(2, '0') + '月' + String(d.getDate()).padStart(2, '0') + '日';
+        }
+
+        function getWeekday(d) {
+            return ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'][d.getDay()];
+        }
+
+        function daysBetween(d1, d2) {
+            return Math.floor((d2 - d1) / (1000 * 60 * 60 * 24));
+        }
+
+        function formatDateKey(d) {
+            return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+        }
+
+        function escapeHtml(text) {
+            var div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function getQuadrant(tag) {
+            var map = { '重要紧急': 1, '重要不紧急': 2, '不重要紧急': 3, '不重要不紧急': 4 };
+            return map[tag] || 0;
+        }
+
+        function getTagEmoji(tag) {
+            var map = { '重要紧急': '🔥', '重要不紧急': '🌱', '不重要紧急': '⏰', '不重要不紧急': '☁️' };
+            return map[tag] || '📌';
+        }
+
+        function getFullImageUrl(url) {
+            if (!url) return '';
+            if (url.startsWith('http://') || url.startsWith('https://')) return url;
+            var baseUrl = SUPABASE_URL.replace(/\/+$/, '');
+            if (url.startsWith('/')) return baseUrl + url;
+            return baseUrl + '/storage/v1/object/public/' + url;
+        }
+
+        var today = new Date();
+        document.getElementById('todayDate').textContent = formatDate(today);
+        document.getElementById('todayWeekday').textContent = getWeekday(today);
+        var start = new Date(START_DATE);
+        var diff = daysBetween(start, today);
+        document.getElementById('daysCount').textContent = Math.max(0, diff);
+        var todayKey = formatDateKey(today);
+
+        // ============================================================
+        //  待办
+        // ============================================================
+        var todoList = document.getElementById('todoList');
+        var todoCount = document.getElementById('todoCount');
+
+        async function loadTodos() {
+            try {
+                var result = await supabase.from('todos').select('*').eq('date', todayKey).order('created_at', { ascending: false });
+                if (result.error) { todoList.innerHTML = '<div class="todo-empty">⚠️ 加载失败</div>'; return; }
+                var data = result.data;
+                if (!data || data.length === 0) {
+                    todoList.innerHTML = '<div class="todo-empty">✨ 今天没有待办，轻松的一天 ~</div>';
+                    todoCount.textContent = '0';
+                    return;
+                }
+                var html = '';
+                var undone = 0;
+                data.forEach(function(t) {
+                    if (!t.done) undone++;
+                    var doneClass = t.done ? 'done' : '';
+                    var textClass = t.done ? 'done-text' : '';
+                    html += `
+                            <div class="todo-item">
+                                <div class="todo-checkbox ${doneClass}" onclick="toggleTodo('${t.id}')"></div>
+                                <span class="todo-text ${textClass}">${escapeHtml(t.title)}</span>
+                                <span class="todo-tag">${escapeHtml(t.tag || '未分类')}</span>
+                                <button class="todo-delete" onclick="deleteTodo('${t.id}')">✕</button>
+                            </div>
+                        `;
+                });
+                todoList.innerHTML = html;
+                todoCount.textContent = undone;
+                loadMatrix();
+                loadCalendarTodos(selectedDateKey || todayKey);
+            } catch (e) { todoList.innerHTML = '<div class="todo-empty">⚠️ 加载失败</div>'; }
+        }
+
+        async function toggleTodo(id) {
+            try {
+                var result = await supabase.from('todos').select('done').eq('id', id).single();
+                if (result.error) { alert('操作失败'); return; }
+                await supabase.from('todos').update({ done: !result.data.done }).eq('id', id);
+                await loadTodos();
+                renderCalendar(currentYear, currentMonth);
+            } catch (e) { alert('操作失败'); }
+        }
+
+        async function deleteTodo(id) {
+            if (!confirm('确定要删除这条待办吗？')) return;
+            try { await supabase.from('todos').delete().eq('id', id); await loadTodos(); renderCalendar(currentYear, currentMonth); } catch (e) { alert('删除失败'); }
+        }
+
+        async function addTodo() {
+            var input = document.getElementById('todoInput');
+            var tag = document.getElementById('todoTag').value;
+            var title = input.value.trim();
+            if (!title) { alert('请输入内容 📝'); return; }
+            try {
+                await supabase.from('todos').insert({ title: title, tag: tag, done: false, date: todayKey, created_by: '我' });
+                input.value = '';
+                await loadTodos();
+                renderCalendar(currentYear, currentMonth);
+            } catch (e) { alert('添加失败'); }
+        }
+
+        document.getElementById('addBtn').addEventListener('click', addTodo);
+        document.getElementById('todoInput').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') addTodo();
+        });
+
+        // ============================================================
+        //  四象限
+        // ============================================================
+        async function loadMatrix() {
+            try {
+                var result = await supabase.from('todos').select('*').eq('date', todayKey).eq('done', false);
+                if (result.error || !result.data) return;
+                var data = result.data;
+                var quadrants = { 1: [], 2: [], 3: [], 4: [] };
+                data.forEach(function(t) { var q = getQuadrant(t.tag); if (q > 0) quadrants[q].push(t); });
+                for (var i = 1; i <= 4; i++) {
+                    var container = document.getElementById('q' + i + '-list');
+                    var items = quadrants[i];
+                    container.innerHTML = items.length === 0 ? '<div class="quadrant-empty">—</div>' :
+                        items.map(function(t) { return '<div class="quadrant-item"><span class="q-dot">●</span>' + escapeHtml(t.title) + '</div>'; }).join('');
+                }
+            } catch (e) { /* ignore */ }
+        }
+
+        // ============================================================
+        //  日历
+        // ============================================================
+        var currentYear = today.getFullYear();
+        var currentMonth = today.getMonth();
+        var selectedDateKey = todayKey;
+
+        function renderCalendar(year, month) {
+            var grid = document.getElementById('calendarGrid');
+            document.getElementById('monthYear').textContent = year + '年' + String(month + 1).padStart(2, '0') + '月';
+            var firstDay = new Date(year, month, 1).getDay();
+            var daysInMonth = new Date(year, month + 1, 0).getDate();
+            var daysInPrevMonth = new Date(year, month, 0).getDate();
+            var weekdays = ['日', '一', '二', '三', '四', '五', '六'];
+            var html = '';
+            weekdays.forEach(function(w) { html += '<div class="weekday">' + w + '</div>'; });
+            for (var i = firstDay - 1; i >= 0; i--) { html += '<div class="day other-month">' + (daysInPrevMonth - i) + '</div>'; }
+            var todayStr = formatDateKey(today);
+            for (var d = 1; d <= daysInMonth; d++) {
+                var dateKey = year + '-' + String(month + 1).padStart(2, '0') + '-' + String(d).padStart(2, '0');
+                var classes = 'day';
+                if (dateKey === todayStr) classes += ' today';
+                if (dateKey === selectedDateKey) classes += ' selected';
+                html += '<div class="' + classes + '" onclick="selectDate(\'' + dateKey + '\')">' + d + '</div>';
+            }
+            grid.innerHTML = html;
+            loadCalendarTodos(selectedDateKey);
+            markCalendarDates(year, month);
+            // 更新日期标签
+            var label = document.getElementById('calendarSelectedDateLabel');
+            if (selectedDateKey) {
+                var parts = selectedDateKey.split('-');
+                label.textContent = parts[0] + '年' + parts[1] + '月' + parts[2] + '日';
+            } else {
+                label.textContent = '选中日期';
+            }
+        }
+
+        async function markCalendarDates(year, month) {
+            var startDate = year + '-' + String(month + 1).padStart(2, '0') + '-01';
+            var endDate = year + '-' + String(month + 1).padStart(2, '0') + '-' + String(new Date(year, month + 1, 0).getDate()).padStart(2, '0');
+            try {
+                var result = await supabase.from('todos').select('date').gte('date', startDate).lte('date', endDate);
+                if (result.error || !result.data) return;
+                var dates = {};
+                result.data.forEach(function(t) { dates[t.date] = true; });
+                var days = document.querySelectorAll('.calendar-grid .day:not(.other-month)');
+                days.forEach(function(el) {
+                    var d = parseInt(el.textContent);
+                    var dateKey = year + '-' + String(month + 1).padStart(2, '0') + '-' + String(d).padStart(2, '0');
+                    if (dates[dateKey]) el.classList.add('has-todo');
+                });
+            } catch (e) { /* ignore */ }
+        }
+
+        function selectDate(dateKey) {
+            selectedDateKey = dateKey;
+            renderCalendar(currentYear, currentMonth);
+            loadCalendarTodos(dateKey);
+        }
+
+        async function loadCalendarTodos(dateKey) {
+            var container = document.getElementById('calendarTodoList');
+            try {
+                var result = await supabase.from('todos').select('*').eq('date', dateKey).order('created_at', { ascending: false });
+                if (result.error || !result.data || result.data.length === 0) {
+                    container.innerHTML = '<div class="todo-empty">✨ 这天没有待办</div>';
+                    return;
+                }
+                var html = '';
+                result.data.forEach(function(t) {
+                    var doneClass = t.done ? 'done' : '';
+                    var textClass = t.done ? 'done-text' : '';
+                    html += `
+                            <div class="todo-item">
+                                <div class="todo-checkbox ${doneClass}" onclick="toggleTodo('${t.id}')"></div>
+                                <span class="todo-text ${textClass}">${escapeHtml(t.title)}</span>
+                                <span class="todo-tag">${escapeHtml(t.tag || '未分类')}</span>
+                                <button class="todo-delete" onclick="deleteTodo('${t.id}')">✕</button>
+                            </div>
+                        `;
+                });
+                container.innerHTML = html;
+            } catch (e) { container.innerHTML = '<div class="todo-empty">⚠️ 加载失败</div>'; }
+        }
+
+        document.getElementById('prevMonth').addEventListener('click', function() {
+            currentMonth--;
+            if (currentMonth < 0) { currentMonth = 11; currentYear--; }
+            renderCalendar(currentYear, currentMonth);
+        });
+
+        document.getElementById('nextMonth').addEventListener('click', function() {
+            currentMonth++;
+            if (currentMonth > 11) { currentMonth = 0; currentYear++; }
+            renderCalendar(currentYear, currentMonth);
+        });
+
+        // ============================================================
+        //  日历页面快速添加待办
+        // ============================================================
+        var calendarTodoInput = document.getElementById('calendarTodoInput');
+        var calendarTodoTag = document.getElementById('calendarTodoTag');
+        var calendarAddBtn = document.getElementById('calendarAddBtn');
+
+        async function addCalendarTodo() {
+            var title = calendarTodoInput.value.trim();
+            var tag = calendarTodoTag.value;
+            if (!title) { alert('请输入待办内容 📝'); return; }
+            try {
+                await supabase.from('todos').insert({
+                    title: title,
+                    tag: tag,
+                    done: false,
+                    date: selectedDateKey || todayKey,
+                    created_by: '我'
+                });
+                calendarTodoInput.value = '';
+                await loadTodos();
+                renderCalendar(currentYear, currentMonth);
+            } catch (e) { alert('添加失败'); }
+        }
+
+        calendarAddBtn.addEventListener('click', addCalendarTodo);
+        calendarTodoInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') addCalendarTodo();
+        });
+
+        // ============================================================
+        //  相册
+        // ============================================================
+        var photoInput = document.getElementById('photoInput');
+        var photoTimeline = document.getElementById('photoTimeline');
+
+        async function uploadPhotos(files) {
+            for (var i = 0; i < files.length; i++) {
+                var file = files[i];
+                var fileExt = file.name.split('.').pop();
+                var fileName = Date.now() + '_' + Math.random().toString(36).substring(2, 6) + '.' + fileExt;
+                var filePath = 'photos/' + fileName;
+                try {
+                    var uploadResult = await supabase.storage.from('love-photos').upload(filePath, file);
+                    if (uploadResult.error) { console.error('上传失败:', uploadResult.error); continue; }
+                    var urlResult = supabase.storage.from('love-photos').getPublicUrl(filePath);
+                    var photoUrl = urlResult.data.publicUrl;
+                    var caption = prompt('📝 给这张照片加一句说明吧：', file.name);
+                    await supabase.from('photos').insert({
+                        image_url: photoUrl,
+                        caption: caption || file.name,
+                        date: todayKey,
+                        created_by: '我'
+                    });
+                } catch (e) { console.error('上传出错:', e); }
+            }
+            loadPhotos();
+        }
+
+        function openLightbox(imageUrl) {
+            document.getElementById('lightboxImage').src = imageUrl;
+            document.getElementById('lightbox').classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.remove('show');
+            document.body.style.overflow = '';
+        }
+
+        document.getElementById('lightbox').addEventListener('click', function(e) {
+            if (e.target === this) closeLightbox();
+        });
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeLightbox();
+        });
+
+        async function loadPhotos() {
+            try {
+                var result = await supabase.from('photos').select('*').order('created_at', { ascending: false });
+                if (result.error || !result.data || result.data.length === 0) {
+                    photoTimeline.innerHTML = '<div class="photo-empty">📸 还没有照片，记录你们的时刻吧 💕</div>';
+                    return;
+                }
+                var data = result.data;
+                var html = '';
+                var currentGroupDate = '';
+                data.forEach(function(p) {
+                    var displayDate = p.date || '未知日期';
+                    if (displayDate !== currentGroupDate) {
+                        if (currentGroupDate !== '') html += '</div>';
+                        html += '<div class="photo-group">';
+                        html += '<div class="group-date">📅 ' + displayDate + '</div>';
+                        currentGroupDate = displayDate;
+                    }
+                    var imageUrl = getFullImageUrl(p.image_url);
+                    var imgHtml = imageUrl ?
+                        '<img src="' + imageUrl + '" alt="照片" loading="lazy" onerror="this.parentElement.innerHTML=\'📷\'" />' :
+                        '📷';
+                    var captionHtml = p.caption ?
+                        '<span class="caption">' + escapeHtml(p.caption) + '</span>' :
+                        '<span class="caption-placeholder">无说明 💭</span>';
+                    html += `
+                            <div class="photo-card" onclick="openLightbox('${imageUrl}')">
+                                <div class="thumb">${imgHtml}</div>
+                                <div class="info">
+                                    ${captionHtml}
+                                    <div class="meta">
+                                        <span class="who">${escapeHtml(p.created_by || '我')}</span>
+                                        ${p.created_at ? ' · ' + new Date(p.created_at).toLocaleTimeString('zh-CN', {hour:'2-digit', minute:'2-digit'}) : ''}
+                                    </div>
+                                </div>
+                                <button class="photo-delete-btn" onclick="event.stopPropagation();deletePhoto('${p.id}')">✕</button>
+                            </div>
+                        `;
+                });
+                html += '</div>';
+                photoTimeline.innerHTML = html;
+            } catch (e) {
+                console.error('加载照片失败:', e);
+                photoTimeline.innerHTML = '<div class="photo-empty">⚠️ 加载失败</div>';
+            }
+        }
+
+        async function deletePhoto(id) {
+            if (!confirm('确定要删除这张照片吗？')) return;
+            try {
+                var result = await supabase.from('photos').select('image_url').eq('id', id).single();
+                if (result.data && result.data.image_url) {
+                    var urlParts = result.data.image_url.split('/');
+                    var filePath = 'photos/' + urlParts[urlParts.length - 1];
+                    await supabase.storage.from('love-photos').remove([filePath]);
+                }
+                await supabase.from('photos').delete().eq('id', id);
+                loadPhotos();
+            } catch (e) { alert('删除失败'); }
+        }
+
+        photoInput.addEventListener('change', function(e) {
+            if (this.files.length > 0) {
+                uploadPhotos(this.files);
+                this.value = '';
+            }
+        });
+
+        document.getElementById('photoUploadArea').addEventListener('click', function() {
+            photoInput.click();
+        });
+
+        // ============================================================
+        //  导航
+        // ============================================================
+        document.querySelectorAll('.nav-tab').forEach(function(tab) {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.nav-tab').forEach(function(t) { t.classList.remove('active'); });
+                document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
+                this.classList.add('active');
+                document.getElementById(this.dataset.page).classList.add('active');
+            });
+        });
+
+        // ============================================================
+        //  初始化 Storage
+        // ============================================================
+        async function initStorage() {
+            try {
+                var buckets = await supabase.storage.listBuckets();
+                var exists = false;
+                if (buckets.data) {
+                    for (var i = 0; i < buckets.data.length; i++) {
+                        if (buckets.data[i].name === 'love-photos') { exists = true; break; }
+                    }
+                }
+                if (!exists) {
+                    await supabase.storage.createBucket('love-photos', { public: true });
+                    console.log('✅ 相册存储已创建');
+                }
+            } catch (e) { console.log('存储初始化:', e.message); }
+        }
+
+        // ============================================================
+        //  启动
+        // ============================================================
+        renderCalendar(currentYear, currentMonth);
+        loadTodos();
+        loadPhotos();
+        initStorage();
+        console.log('💕 恋爱空间已启动！');
+    </script>
+
+</body>
+</html>
