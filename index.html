@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>恋爱空间测试</title>
+    <style>
+        body {
+            font-family: Arial;
+            padding: 30px;
+            background: #fdf6f7;
+        }
+        .box {
+            max-width: 400px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(255,150,180,0.2);
+        }
+        h1 { color: #ff6b8a; }
+        .debug {
+            background: #f0f0f0;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 13px;
+            margin-top: 20px;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+        .ok { color: green; }
+        .err { color: red; }
+        input, select, button {
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+            font-size: 14px;
+            width: 100%;
+        }
+        button {
+            background: #ff9aae;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .todo-item {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="box">
+    <h1>💕 我们的恋爱空间</h1>
+
+    <!-- 日期显示 -->
+    <p><strong>今天：</strong><span id="dateDisplay">加载中...</span></p>
+    <p><strong>在一起：</strong>❤️ 第 <span id="dayDisplay">??</span> 天</p>
+
+    <hr>
+
+    <!-- 添加待办 -->
+    <input type="text" id="todoInput" placeholder="写一件待办...">
+    <select id="todoTag">
+        <option>重要紧急</option>
+        <option>重要不紧急</option>
+        <option>不重要紧急</option>
+        <option>不重要不紧急</option>
+    </select>
+    <button id="addBtn">➕ 添加</button>
+
+    <h3>📋 今日待办</h3>
+    <div id="todoList">加载中...</div>
+
+    <!-- 调试信息 -->
+    <div class="debug" id="debugBox">⏳ 诊断信息加载中...</div>
+</div>
+
+<!-- ========================================== -->
+<!-- 引入 Supabase SDK -->
+<!-- ========================================== -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js">
+</script>
+
+<!-- ========================================== -->
+<!-- JavaScript 代码 -->
+<!-- ========================================== -->
+<script>
+    // ============================================================
+    // 🔑 修改这里！
+    // ============================================================
+    var SUPABASE_URL = 'https://fsmgeesifwqfhpdndzmg.supabase.co';
+    var SUPABASE_KEY = 'sb_publishable_t2AMEoq4SSfwXaGUSQ6opA_UBUuqwfs';
+    var START_DATE = '2026-06-10';
+
+    // ============================================================
+    // 调试工具
+    // ============================================================
+    var debugBox = document.getElementById('debugBox');
+    var logs = [];
+
+    function log(msg, isError) {
+        var time = new Date().toLocaleTimeString();
+        var line = '[' + time + '] ' + msg;
+        logs.push(line);
+        debugBox.textContent = logs.join('\n');
+        if (isError) {
+            console.error(msg);
+        } else {
+            console.log(msg);
+        }
+    }
+
+    log('🚀 页面已加载');
+
+    // ============================================================
+    // 检查密钥
+    // ============================================================
+    if (SUPABASE_URL.indexOf('你的项目ID') > -1) {
+        log('❌ 请修改 SUPABASE_URL！', true);
+    }
+    if (SUPABASE_KEY.indexOf('你的密钥') > -1) {
+        log('❌ 请修改 SUPABASE_KEY！', true);
+    }
+
+    log('📡 正在连接 Supabase...');
+
+    // ============================================================
+    // 初始化 Supabase
+    // ============================================================
+    try {
+        var supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        log('✅ Supabase 连接成功');
+    } catch (e) {
+        log('❌ Supabase 连接失败: ' + e.message, true);
+    }
+
+    // ============================================================
+    // 日期工具
+    // ============================================================
+    function formatDate(d) {
+        return d.getFullYear() + '年' + String(d.getMonth() + 1).padStart(2, '0') + '月' + String(d.getDate())
+            .padStart(2, '0') + '日';
+    }
+
+    function getWeekday(d) {
+        return ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'][d.getDay()];
+    }
+
+    function daysBetween(d1, d2) {
+        return Math.floor((d2 - d1) / (1000 * 60 * 60 * 24));
+    }
+
+    function formatDateKey(d) {
+        return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2,
+        '0');
+    }
+
+    // ============================================================
+    // 显示日期
+    // ============================================================
+    var today = new Date();
+    log('📅 当前日期: ' + formatDate(today));
+
+    document.getElementById('dateDisplay').textContent = formatDate(today) + ' ' + getWeekday(today);
+
+    var start = new Date(START_DATE);
+    var diff = daysBetween(start, today);
+    document.getElementById('dayDisplay').textContent = Math.max(0, diff);
+    log('❤️ 在一起 ' + Math.max(0, diff) + ' 天');
+
+    var todayKey = formatDateKey(today);
+    log('📌 查询日期: ' + todayKey);
+
+    // ============================================================
+    // 加载待办
+    // ============================================================
+    var todoList = document.getElementById('todoList');
+
+    async function loadTodos() {
+        log('🔄 加载待办...');
+        try {
+            var result = await supabaseClient
+                .from('todos')
+                .select('*')
+                .eq('date', todayKey)
+                .order('created_at', { ascending: false });
+
+            if (result.error) {
+                log('❌ 数据库错误: ' + result.error.message, true);
+                todoList.textContent = '⚠️ 加载失败: ' + result.error.message;
+                return;
+            }
+
+            var data = result.data;
+            log('✅ 查到 ' + (data ? data.length : 0) + ' 条');
+
+            if (!data || data.length === 0) {
+                todoList.textContent = '✨ 今天没有待办';
+                return;
+            }
+
+            var html = '';
+            data.forEach(function(t) {
+                var checked = t.done ? '✅' : '⬜';
+                html += '<div class="todo-item">' + checked + ' ' + t.title + ' <small>(' + t.tag + ')</small></div>';
+            });
+            todoList.innerHTML = html;
+        } catch (e) {
+            log('❌ 异常: ' + e.message, true);
+            todoList.textContent = '⚠️ 加载异常';
+        }
+    }
+
+    // ============================================================
+    // 添加待办
+    // ============================================================
+    document.getElementById('addBtn').addEventListener('click', function() {
+        var input = document.getElementById('todoInput');
+        var tag = document.getElementById('todoTag').value;
+        var title = input.value.trim();
+        if (!title) {
+            alert('请输入内容');
+            return;
+        }
+        log('➕ 添加: ' + title);
+
+        supabaseClient
+            .from('todos')
+            .insert({
+                title: title,
+                tag: tag,
+                done: false,
+                date: todayKey,
+                created_by: '我'
+            })
+            .then(function(result) {
+                if (result.error) {
+                    log('❌ 添加失败: ' + result.error.message, true);
+                    alert('添加失败');
+                    return;
+                }
+                log('✅ 添加成功');
+                input.value = '';
+                loadTodos();
+            })
+            .catch(function(e) {
+                log('❌ 异常: ' + e.message, true);
+                alert('添加失败');
+            });
+    });
+
+    // ============================================================
+    // 回车添加
+    // ============================================================
+    document.getElementById('todoInput').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+            document.getElementById('addBtn').click();
+        }
+    });
+
+    // ============================================================
+    // 启动
+    // ============================================================
+    log('💕 启动完成');
+    loadTodos();
+</script>
+
+</body>
+</html>
