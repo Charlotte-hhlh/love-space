@@ -5,13 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>💕 我们的恋爱空间</title>
     <style>
-        /* ========== 全局重置 ========== */
+        /* --- 重置 & 全局 --- */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
         body {
             font-family: -apple-system, "PingFang SC", "Helvetica Neue", sans-serif;
             background: #fdf6f7;
@@ -21,19 +20,18 @@
             align-items: flex-start;
             padding: 20px 16px 40px;
         }
-
         .app-container {
             max-width: 420px;
             width: 100%;
             background: rgba(255, 255, 255, 0.75);
             backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
             border-radius: 40px;
             padding: 28px 24px 32px;
-            box-shadow: 0 20px 60px rgba(255, 150, 180, 0.20), 0 8px 24px rgba(255, 120, 160, 0.10);
+            box-shadow: 0 20px 60px rgba(255, 150, 180, 0.20);
             border: 1px solid rgba(255, 255, 255, 0.5);
         }
 
+        /* --- 头部 --- */
         .header {
             display: flex;
             justify-content: space-between;
@@ -41,24 +39,16 @@
             margin-bottom: 24px;
             flex-wrap: wrap;
         }
-
-        .date-section {
-            display: flex;
-            flex-direction: column;
-        }
-
         .date-main {
             font-size: 18px;
             font-weight: 600;
             color: #3d2c33;
         }
-
         .date-weekday {
             font-size: 13px;
             color: #b58a95;
             margin-top: 2px;
         }
-
         .days-counter {
             background: linear-gradient(135deg, #ff9aae, #ffb6c9);
             padding: 8px 18px;
@@ -72,12 +62,12 @@
             align-items: center;
             gap: 6px;
         }
-
         .days-counter span {
             font-size: 20px;
             margin-right: 2px;
         }
 
+        /* --- 导航 Tab --- */
         .nav-tabs {
             display: flex;
             gap: 4px;
@@ -86,8 +76,9 @@
             border-radius: 16px;
             padding: 4px;
             border: 1px solid rgba(255, 200, 210, 0.15);
+            overflow-x: auto;
+            flex-wrap: nowrap;
         }
-
         .nav-tab {
             flex: 1;
             padding: 10px 0;
@@ -100,26 +91,22 @@
             cursor: pointer;
             transition: 0.3s;
             font-family: inherit;
+            white-space: nowrap;
+            text-align: center;
         }
-
         .nav-tab.active {
             background: rgba(255, 255, 255, 0.7);
             color: #3d2c33;
             box-shadow: 0 2px 8px rgba(255, 150, 180, 0.15);
         }
-
-        .nav-tab:active {
-            transform: scale(0.96);
-        }
-
         .page {
             display: none;
         }
-
         .page.active {
             display: block;
         }
 
+        /* --- 通用组件 --- */
         .section-title {
             font-size: 15px;
             font-weight: 600;
@@ -129,7 +116,6 @@
             align-items: center;
             gap: 8px;
         }
-
         .section-title .badge {
             background: #ffb6c9;
             color: #fff;
@@ -140,48 +126,6 @@
             line-height: 20px;
             font-weight: 500;
         }
-
-        .add-todo-area {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 16px;
-            flex-wrap: wrap;
-        }
-
-        .add-todo-area input {
-            flex: 1;
-            min-width: 120px;
-            padding: 10px 14px;
-            border-radius: 16px;
-            border: 1.5px solid #f0dce2;
-            background: rgba(255, 255, 255, 0.6);
-            font-size: 14px;
-            outline: none;
-            font-family: inherit;
-            color: #3d2c33;
-        }
-
-        .add-todo-area input:focus {
-            border-color: #ff9aae;
-            background: #fff;
-        }
-
-        .add-todo-area input::placeholder {
-            color: #c8aeb8;
-        }
-
-        .add-todo-area select {
-            padding: 10px 12px;
-            border-radius: 16px;
-            border: 1.5px solid #f0dce2;
-            background: rgba(255, 255, 255, 0.6);
-            font-size: 13px;
-            outline: none;
-            color: #3d2c33;
-            font-family: inherit;
-            cursor: pointer;
-        }
-
         .btn-add {
             padding: 10px 20px;
             border-radius: 16px;
@@ -195,11 +139,9 @@
             font-family: inherit;
             white-space: nowrap;
         }
-
         .btn-add:active {
             transform: scale(0.95);
         }
-
         .todo-list {
             background: rgba(255, 245, 247, 0.4);
             border-radius: 16px;
@@ -207,19 +149,17 @@
             min-height: 60px;
             border: 1px solid rgba(255, 200, 210, 0.15);
         }
-
         .todo-item {
             display: flex;
             align-items: center;
             padding: 10px 14px;
             border-bottom: 1px solid rgba(255, 200, 210, 0.12);
             gap: 10px;
+            flex-wrap: wrap;
         }
-
         .todo-item:last-child {
             border-bottom: none;
         }
-
         .todo-checkbox {
             width: 22px;
             height: 22px;
@@ -233,35 +173,26 @@
             justify-content: center;
             background: #fff;
         }
-
         .todo-checkbox:hover {
             border-color: #ff9aae;
         }
-
         .todo-checkbox.done {
             background: #ff9aae;
             border-color: #ff9aae;
         }
-
         .todo-checkbox.done::after {
             content: "✓";
             color: #fff;
             font-size: 13px;
             font-weight: 700;
         }
-
         .todo-text {
             flex: 1;
             font-size: 14px;
             color: #3d2c33;
             word-break: break-word;
+            min-width: 80px;
         }
-
-        .todo-text.done-text {
-            text-decoration: line-through;
-            color: #b58a95;
-        }
-
         .todo-tag {
             font-size: 10px;
             background: #f0e0e5;
@@ -271,7 +202,15 @@
             font-weight: 500;
             flex-shrink: 0;
         }
-
+        .todo-category {
+            font-size: 10px;
+            background: #dce8f0;
+            padding: 2px 10px;
+            border-radius: 20px;
+            color: #4a6a7a;
+            font-weight: 500;
+            flex-shrink: 0;
+        }
         .todo-delete {
             background: none;
             border: none;
@@ -282,51 +221,116 @@
             flex-shrink: 0;
             transition: 0.2s;
         }
-
         .todo-delete:active {
             transform: scale(1.2);
             color: #ff6b8a;
         }
-
         .todo-empty {
             padding: 20px 16px;
             text-align: center;
             color: #b58a95;
             font-size: 14px;
         }
-
-        .loading-tip {
-            padding: 20px 16px;
+        .todo-empty span {
+            font-size: 24px;
+            display: block;
+            margin-bottom: 6px;
+        }
+        .footer-note {
             text-align: center;
-            color: #b58a95;
-            font-size: 14px;
+            margin-top: 24px;
+            font-size: 11px;
+            color: #d4b8c2;
+            letter-spacing: 1px;
+            border-top: 1px solid rgba(255, 200, 210, 0.20);
+            padding-top: 18px;
         }
 
+        /* --- 搜索 + 筛选标签 --- */
+        .filter-bar {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        .search-box {
+            width: 100%;
+            padding: 10px 14px;
+            border-radius: 16px;
+            border: 1.5px solid #f0dce2;
+            background: rgba(255, 255, 255, 0.6);
+            font-size: 14px;
+            outline: none;
+            font-family: inherit;
+            color: #3d2c33;
+            transition: 0.2s;
+        }
+        .search-box:focus {
+            border-color: #ff9aae;
+            background: #fff;
+        }
+        .search-box::placeholder {
+            color: #c8aeb8;
+        }
+        .filter-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .filter-tag {
+            padding: 4px 14px;
+            border-radius: 20px;
+            border: 1.5px solid #f0dce2;
+            background: transparent;
+            font-size: 12px;
+            font-weight: 500;
+            color: #7a5a66;
+            cursor: pointer;
+            transition: 0.3s;
+            font-family: inherit;
+        }
+        .filter-tag.active {
+            background: #ffb6c9;
+            border-color: #ffb6c9;
+            color: #fff;
+        }
+        .filter-tag:active {
+            transform: scale(0.95);
+        }
+
+        /* --- 四象限 --- */
         .matrix-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 10px;
         }
-
         .quadrant {
             background: rgba(255, 245, 247, 0.4);
             border-radius: 16px;
             padding: 12px 14px;
-            min-height: 100px;
+            min-height: 80px;
             border: 1px solid rgba(255, 200, 210, 0.15);
         }
-
         .quadrant-title {
             font-size: 12px;
             font-weight: 600;
             color: #7a5a66;
             margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-
-        .quadrant-title .emoji {
-            margin-right: 4px;
+        .quadrant-title select {
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 10px;
+            border: 1px solid #f0dce2;
+            background: rgba(255, 255, 255, 0.6);
+            color: #7a5a66;
+            outline: none;
+            font-family: inherit;
+            cursor: pointer;
         }
-
         .quadrant-item {
             font-size: 13px;
             color: #3d2c33;
@@ -335,29 +339,27 @@
             display: flex;
             align-items: center;
             gap: 6px;
+            flex-wrap: wrap;
         }
-
         .quadrant-item:last-child {
             border-bottom: none;
         }
-
-        .quadrant-item .q-dot {
-            font-size: 8px;
-            color: #ff9aae;
-        }
-
         .quadrant-empty {
             font-size: 12px;
             color: #c8aeb8;
         }
+        .q-dot {
+            font-size: 8px;
+            color: #ff9aae;
+        }
 
+        /* --- 日历 --- */
         .calendar-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 12px;
         }
-
         .calendar-header button {
             background: none;
             border: none;
@@ -366,27 +368,18 @@
             color: #b58a95;
             padding: 4px 12px;
         }
-
-        .calendar-header .month-year {
-            font-size: 16px;
-            font-weight: 600;
-            color: #3d2c33;
-        }
-
         .calendar-grid {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
             gap: 4px;
             text-align: center;
         }
-
         .calendar-grid .weekday {
             font-size: 11px;
             color: #b58a95;
             padding: 6px 0;
             font-weight: 500;
         }
-
         .calendar-grid .day {
             padding: 8px 0;
             border-radius: 12px;
@@ -396,17 +389,14 @@
             transition: 0.2s;
             position: relative;
         }
-
         .calendar-grid .day:active {
             transform: scale(0.92);
         }
-
         .calendar-grid .day.today {
             background: #ff9aae;
             color: #fff;
             font-weight: 600;
         }
-
         .calendar-grid .day.has-todo::after {
             content: "";
             position: absolute;
@@ -418,21 +408,18 @@
             border-radius: 50%;
             background: #ff9aae;
         }
-
         .calendar-grid .day.today.has-todo::after {
             background: #fff;
         }
-
         .calendar-grid .day.other-month {
             color: #d4b8c2;
         }
-
         .calendar-grid .day.selected {
             background: #f0e0e5;
             font-weight: 600;
         }
 
-        /* ========== 相册样式 ========== */
+        /* --- 相册 --- */
         .photo-upload-area {
             display: flex;
             flex-direction: column;
@@ -445,25 +432,16 @@
             cursor: pointer;
             transition: 0.3s;
         }
-
         .photo-upload-area:active {
             transform: scale(0.98);
         }
-
         .photo-upload-area .icon {
             font-size: 40px;
             margin-bottom: 8px;
         }
-
-        .photo-upload-area .text {
-            color: #b58a95;
-            font-size: 14px;
-        }
-
         .photo-upload-area input {
             display: none;
         }
-
         .photo-timeline {
             display: flex;
             flex-direction: column;
@@ -472,13 +450,11 @@
             overflow-y: auto;
             padding-bottom: 8px;
         }
-
         .photo-group {
             display: flex;
             flex-direction: column;
             gap: 10px;
         }
-
         .photo-group .group-date {
             font-size: 13px;
             font-weight: 600;
@@ -486,7 +462,6 @@
             padding-left: 12px;
             border-left: 3px solid #ffb6c9;
         }
-
         .photo-card {
             display: flex;
             gap: 14px;
@@ -498,11 +473,9 @@
             cursor: pointer;
             transition: 0.2s;
         }
-
         .photo-card:active {
             transform: scale(0.98);
         }
-
         .photo-card .thumb {
             width: 70px;
             height: 70px;
@@ -515,40 +488,25 @@
             font-size: 30px;
             overflow: hidden;
         }
-
         .photo-card .thumb img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
-
         .photo-card .info {
             flex: 1;
             min-width: 0;
         }
-
         .photo-card .info .caption {
             font-size: 14px;
             color: #3d2c33;
             font-weight: 500;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
         }
-
-        .photo-card .info .caption-placeholder {
-            font-size: 14px;
-            color: #c8aeb8;
-            font-style: italic;
-        }
-
         .photo-card .info .meta {
             font-size: 11px;
             color: #b58a95;
             margin-top: 4px;
         }
-
         .photo-card .info .meta .who {
             background: #f0e0e5;
             padding: 1px 10px;
@@ -556,7 +514,6 @@
             font-size: 10px;
             color: #7a5a66;
         }
-
         .photo-delete-btn {
             background: none;
             border: none;
@@ -567,12 +524,10 @@
             flex-shrink: 0;
             transition: 0.2s;
         }
-
         .photo-delete-btn:active {
             transform: scale(1.2);
             color: #ff6b8a;
         }
-
         .photo-empty {
             text-align: center;
             padding: 30px 20px;
@@ -580,7 +535,87 @@
             font-size: 14px;
         }
 
-        /* ========== 图片查看弹窗 ========== */
+        /* --- 复盘卡片样式 --- */
+        .review-card {
+            background: rgba(255, 245, 247, 0.5);
+            border-radius: 16px;
+            padding: 14px 16px;
+            border: 1px solid rgba(255, 200, 210, 0.15);
+            margin-bottom: 12px;
+        }
+        .review-card .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        .review-card .review-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: #3d2c33;
+            flex: 1;
+        }
+        .review-card .review-meta {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .review-card .review-type {
+            font-size: 11px;
+            padding: 2px 12px;
+            border-radius: 20px;
+            background: #ffb6c9;
+            color: #fff;
+            font-weight: 500;
+        }
+        .review-card .review-tag {
+            font-size: 10px;
+            padding: 2px 10px;
+            border-radius: 20px;
+            background: #f0e0e5;
+            color: #7a5a66;
+        }
+        .review-card .review-date {
+            font-size: 11px;
+            color: #b58a95;
+        }
+        .review-card .review-section {
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px dashed rgba(255, 200, 210, 0.3);
+        }
+        .review-card .review-section-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: #7a5a66;
+            margin-bottom: 2px;
+        }
+        .review-card .review-section-content {
+            font-size: 13px;
+            color: #3d2c33;
+            line-height: 1.5;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+        .review-card .review-delete {
+            background: none;
+            border: none;
+            color: #d4b8c2;
+            cursor: pointer;
+            font-size: 14px;
+            padding: 0 4px;
+            flex-shrink: 0;
+            transition: 0.2s;
+        }
+        .review-card .review-delete:active {
+            color: #ff6b8a;
+            transform: scale(1.2);
+        }
+
+        /* --- 图片查看弹窗 --- */
         .lightbox-overlay {
             display: none;
             position: fixed;
@@ -595,19 +630,15 @@
             padding: 20px;
             animation: fadeIn 0.3s;
         }
-
         .lightbox-overlay.show {
             display: flex;
         }
-
         .lightbox-overlay img {
             max-width: 100%;
             max-height: 85vh;
             border-radius: 16px;
             object-fit: contain;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
         }
-
         .lightbox-overlay .close-btn {
             position: fixed;
             top: 20px;
@@ -620,112 +651,57 @@
             opacity: 0.7;
             transition: 0.3s;
         }
-
         .lightbox-overlay .close-btn:hover {
             opacity: 1;
         }
-
         @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
         }
 
-        .footer-note {
-            text-align: center;
-            margin-top: 24px;
-            font-size: 11px;
-            color: #d4b8c2;
-            letter-spacing: 1px;
-            border-top: 1px solid rgba(255, 200, 210, 0.20);
-            padding-top: 18px;
-        }
-
-        /* ========== 日历快速添加待办 ========== */
-        .calendar-quick-add {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-            flex-wrap: wrap;
-            margin-top: 12px;
-        }
-
-        .calendar-quick-add input {
-            flex: 1;
-            min-width: 120px;
-            padding: 8px 12px;
-            border-radius: 12px;
-            border: 1.5px solid #f0dce2;
-            background: rgba(255, 255, 255, 0.6);
-            font-size: 13px;
-            outline: none;
-            font-family: inherit;
-            color: #3d2c33;
-        }
-
-        .calendar-quick-add input:focus {
-            border-color: #ff9aae;
-            background: #fff;
-        }
-
-        .calendar-quick-add input::placeholder {
-            color: #c8aeb8;
-        }
-
-        .calendar-quick-add select {
-            padding: 8px 10px;
-            border-radius: 12px;
-            border: 1.5px solid #f0dce2;
-            background: rgba(255, 255, 255, 0.6);
-            font-size: 12px;
-            outline: none;
-            color: #3d2c33;
-            font-family: inherit;
-            cursor: pointer;
-        }
-
-        .calendar-quick-add .btn-cal-add {
-            padding: 8px 16px;
-            border-radius: 12px;
-            border: none;
-            background: linear-gradient(135deg, #ff9aae, #ffb6c9);
-            color: #fff;
-            font-weight: 600;
-            font-size: 13px;
-            cursor: pointer;
-            font-family: inherit;
-            white-space: nowrap;
-        }
-
-        .calendar-quick-add .btn-cal-add:active {
-            transform: scale(0.95);
-        }
-
+        /* --- 响应式 --- */
         @media (max-width: 420px) {
-            .app-container { padding: 20px 16px 24px; }
-            .add-todo-area input { min-width: 80px; }
-            .add-todo-area select { padding: 10px 8px; font-size: 12px; }
-            .btn-add { padding: 10px 14px; font-size: 13px; }
-            .quadrant { min-height: 70px; padding: 10px 12px; }
-            .photo-card .thumb { width: 55px; height: 55px; }
-            .lightbox-overlay .close-btn { top: 40px; right: 20px; font-size: 28px; }
-            .calendar-quick-add input { min-width: 80px; }
+            .app-container {
+                padding: 20px 16px 24px;
+            }
+            .btn-add {
+                padding: 10px 14px;
+                font-size: 13px;
+            }
+            .photo-card .thumb {
+                width: 55px;
+                height: 55px;
+            }
+            .review-card .review-title {
+                font-size: 14px;
+            }
         }
-
         @media (max-width: 380px) {
-            .days-counter { font-size: 14px; padding: 6px 14px; }
-            .add-todo-area { flex-direction: column; }
-            .add-todo-area input { min-width: unset; }
-            .matrix-grid { gap: 6px; }
-            .calendar-grid .day { font-size: 12px; padding: 6px 0; }
-            .calendar-quick-add { flex-direction: column; }
-            .calendar-quick-add input { min-width: unset; width: 100%; }
+            .days-counter {
+                font-size: 14px;
+                padding: 6px 14px;
+            }
+            .matrix-grid {
+                gap: 6px;
+            }
+            .filter-tags {
+                gap: 4px;
+            }
+            .filter-tag {
+                font-size: 11px;
+                padding: 2px 10px;
+            }
         }
     </style>
 </head>
 <body>
 
     <div class="app-container">
-        <!-- ===== HEADER ===== -->
+        <!-- 头部 -->
         <div class="header">
             <div class="date-section">
                 <div class="date-main" id="todayDate">加载中...</div>
@@ -736,21 +712,30 @@
             </div>
         </div>
 
-        <!-- ===== 导航 ===== -->
+        <!-- 导航 -->
         <div class="nav-tabs" id="navTabs">
             <button class="nav-tab active" data-page="page-todo">📋 待办</button>
             <button class="nav-tab" data-page="page-matrix">🎯 四象限</button>
             <button class="nav-tab" data-page="page-calendar">📅 日历</button>
             <button class="nav-tab" data-page="page-photo">📷 相册</button>
+            <button class="nav-tab" data-page="page-review">💭 复盘</button>
         </div>
 
         <!-- ========================================================== -->
-        <!-- 待办 -->
+        <!-- 页面1：待办 -->
         <!-- ========================================================== -->
         <div class="page active" id="page-todo">
-            <div class="add-todo-area">
-                <input type="text" id="todoInput" placeholder="写一件待办的事情..." />
-                <select id="todoTag">
+            <div class="add-todo-area" style="display:flex; gap:10px; margin-bottom:16px; flex-wrap:wrap;">
+                <input type="text" id="todoInput" placeholder="写一件待办..." style="flex:1; min-width:120px; padding:10px 14px; border-radius:16px; border:1.5px solid #f0dce2; background:rgba(255,255,255,0.6); font-size:14px; outline:none; font-family:inherit; color:#3d2c33;" />
+                <select id="todoCategory" style="padding:10px 12px; border-radius:16px; border:1.5px solid #f0dce2; background:rgba(255,255,255,0.6); font-size:13px; outline:none; color:#3d2c33; font-family:inherit; cursor:pointer;">
+                    <option value="日常">📌 日常</option>
+                    <option value="电影">🎬 电影</option>
+                    <option value="心愿">✨ 心愿</option>
+                    <option value="购物">🛒 购物</option>
+                    <option value="书单">📚 书单</option>
+                    <option value="旅行">✈️ 旅行</option>
+                </select>
+                <select id="todoTag" style="padding:10px 12px; border-radius:16px; border:1.5px solid #f0dce2; background:rgba(255,255,255,0.6); font-size:13px; outline:none; color:#3d2c33; font-family:inherit; cursor:pointer;">
                     <option value="重要紧急">🔥 重要紧急</option>
                     <option value="重要不紧急">🌱 重要不紧急</option>
                     <option value="不重要紧急">⏰ 不重要紧急</option>
@@ -758,74 +743,121 @@
                 </select>
                 <button class="btn-add" id="addBtn">➕ 添加</button>
             </div>
+
+            <div class="filter-bar">
+                <input type="text" class="search-box" id="searchInput" placeholder="🔍 搜索待办..." />
+                <div class="filter-tags" id="filterTags">
+                    <button class="filter-tag active" data-filter="all">📌 全部</button>
+                    <button class="filter-tag" data-filter="日常">📌 日常</button>
+                    <button class="filter-tag" data-filter="电影">🎬 电影</button>
+                    <button class="filter-tag" data-filter="心愿">✨ 心愿</button>
+                    <button class="filter-tag" data-filter="购物">🛒 购物</button>
+                    <button class="filter-tag" data-filter="书单">📚 书单</button>
+                    <button class="filter-tag" data-filter="旅行">✈️ 旅行</button>
+                </div>
+            </div>
+
             <div class="section-title">
-                📋 今日待办
+                📋 全部未完成
                 <span class="badge" id="todoCount">0</span>
             </div>
             <div class="todo-list" id="todoList">
-                <div class="loading-tip">⏳ 加载中...</div>
+                <div class="todo-empty"><span>⏳</span>加载中...</div>
             </div>
         </div>
 
         <!-- ========================================================== -->
-        <!-- 四象限 -->
+        <!-- 页面2：四象限 -->
         <!-- ========================================================== -->
         <div class="page" id="page-matrix">
             <div class="section-title">🎯 四象限矩阵</div>
             <div class="matrix-grid" id="matrixGrid">
                 <div class="quadrant" data-quadrant="1">
-                    <div class="quadrant-title"><span class="emoji">🔥</span>重要·紧急</div>
+                    <div class="quadrant-title">
+                        <span>🔥 重要·紧急</span>
+                        <select class="quadrant-filter" data-quadrant="1">
+                            <option value="all">全部</option>
+                            <option value="日常">📌 日常</option>
+                            <option value="电影">🎬 电影</option>
+                            <option value="心愿">✨ 心愿</option>
+                            <option value="购物">🛒 购物</option>
+                            <option value="书单">📚 书单</option>
+                            <option value="旅行">✈️ 旅行</option>
+                        </select>
+                    </div>
                     <div id="q1-list"></div>
                 </div>
                 <div class="quadrant" data-quadrant="2">
-                    <div class="quadrant-title"><span class="emoji">🌱</span>重要·不紧急</div>
+                    <div class="quadrant-title">
+                        <span>🌱 重要·不紧急</span>
+                        <select class="quadrant-filter" data-quadrant="2">
+                            <option value="all">全部</option>
+                            <option value="日常">📌 日常</option>
+                            <option value="电影">🎬 电影</option>
+                            <option value="心愿">✨ 心愿</option>
+                            <option value="购物">🛒 购物</option>
+                            <option value="书单">📚 书单</option>
+                            <option value="旅行">✈️ 旅行</option>
+                        </select>
+                    </div>
                     <div id="q2-list"></div>
                 </div>
                 <div class="quadrant" data-quadrant="3">
-                    <div class="quadrant-title"><span class="emoji">⏰</span>不重要·紧急</div>
+                    <div class="quadrant-title">
+                        <span>⏰ 不重要·紧急</span>
+                        <select class="quadrant-filter" data-quadrant="3">
+                            <option value="all">全部</option>
+                            <option value="日常">📌 日常</option>
+                            <option value="电影">🎬 电影</option>
+                            <option value="心愿">✨ 心愿</option>
+                            <option value="购物">🛒 购物</option>
+                            <option value="书单">📚 书单</option>
+                            <option value="旅行">✈️ 旅行</option>
+                        </select>
+                    </div>
                     <div id="q3-list"></div>
                 </div>
                 <div class="quadrant" data-quadrant="4">
-                    <div class="quadrant-title"><span class="emoji">☁️</span>不重要·不紧急</div>
+                    <div class="quadrant-title">
+                        <span>☁️ 不重要·不紧急</span>
+                        <select class="quadrant-filter" data-quadrant="4">
+                            <option value="all">全部</option>
+                            <option value="日常">📌 日常</option>
+                            <option value="电影">🎬 电影</option>
+                            <option value="心愿">✨ 心愿</option>
+                            <option value="购物">🛒 购物</option>
+                            <option value="书单">📚 书单</option>
+                            <option value="旅行">✈️ 旅行</option>
+                        </select>
+                    </div>
                     <div id="q4-list"></div>
                 </div>
             </div>
         </div>
 
         <!-- ========================================================== -->
-        <!-- 日历（含快速添加待办） -->
+        <!-- 页面3：日历 -->
         <!-- ========================================================== -->
         <div class="page" id="page-calendar">
             <div class="section-title">📅 日历</div>
             <div id="calendarContainer">
                 <div class="calendar-header">
                     <button id="prevMonth">‹</button>
-                    <span class="month-year" id="monthYear">2026年7月</span>
+                    <span class="month-year" id="monthYear"></span>
                     <button id="nextMonth">›</button>
                 </div>
                 <div class="calendar-grid" id="calendarGrid"></div>
-                <div style="margin-top:16px;">
-                    <div class="section-title" style="font-size:13px;">📌 <span id="calendarSelectedDateLabel">选中日期</span> 的待办</div>
+                <div style="margin-top: 16px;">
+                    <div class="section-title" style="font-size: 13px;">📌 <span id="calendarSelectedDateLabel">选中日期</span> 的待办</div>
                     <div class="todo-list" id="calendarTodoList">
                         <div class="todo-empty">点击日期查看待办</div>
-                    </div>
-                    <!-- 快速添加待办 -->
-                    <div class="calendar-quick-add">
-                        <input type="text" id="calendarTodoInput" placeholder="快速添加待办..." />
-                        <select id="calendarTodoTag">
-                            <option value="重要紧急">🔥 重要紧急</option>
-                            <option value="重要不紧急">🌱 重要不紧急</option>
-                            <option value="不重要紧急">⏰ 不重要紧急</option>
-                            <option value="不重要不紧急">☁️ 不重要不紧急</option>
-                        </select>
-                        <button class="btn-cal-add" id="calendarAddBtn">➕ 添加</button>
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- ========================================================== -->
-        <!-- 相册 -->
+        <!-- 页面4：相册 -->
         <!-- ========================================================== -->
         <div class="page" id="page-photo">
             <div class="section-title">📷 时光相册</div>
@@ -839,33 +871,100 @@
             </div>
         </div>
 
+        <!-- ========================================================== -->
+        <!-- 页面5：复盘（结构化） -->
+        <!-- ========================================================== -->
+        <div class="page" id="page-review">
+            <div class="section-title">💭 复盘日记</div>
+
+            <!-- 新增复盘按钮 -->
+            <button class="btn-add" id="openReviewBtn" style="width:100%; margin-bottom:16px;">📝 记录一次复盘</button>
+
+            <!-- 复盘列表 -->
+            <div id="reviewList">
+                <div class="todo-empty"><span>📖</span>还没有复盘记录...</div>
+            </div>
+        </div>
+
         <div class="footer-note">💕 只属于我们的恋爱空间</div>
     </div>
 
-    <!-- ===== 图片查看弹窗 ===== -->
-    <div class="lightbox-overlay" id="lightbox" onclick="closeLightbox()">
+    <!-- 图片查看弹窗 -->
+    <div class="lightbox-overlay" id="lightbox">
         <button class="close-btn" onclick="closeLightbox()">✕</button>
         <img id="lightboxImage" src="" alt="查看图片" />
     </div>
 
+    <!-- 复盘弹窗（引导式表单） -->
+    <div class="lightbox-overlay" id="reviewModal" style="background:rgba(0,0,0,0.6); align-items:center; justify-content:center;">
+        <div style="max-width:380px; width:100%; background:#fff; border-radius:28px; padding:24px 20px; max-height:90vh; overflow-y:auto;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+                <h3 style="color:#3d2c33; font-size:18px;">📝 记录复盘</h3>
+                <button onclick="closeReviewModal()" style="background:none; border:none; font-size:24px; color:#b58a95; cursor:pointer;">✕</button>
+            </div>
+
+            <!-- 1. 基础信息 -->
+            <div style="margin-bottom:14px;">
+                <label style="font-size:13px; font-weight:600; color:#7a5a66;">事件类型</label>
+                <select id="reviewType" style="width:100%; padding:10px 12px; border-radius:12px; border:1.5px solid #f0dce2; font-size:14px; background:#fff; margin-top:4px;">
+                    <option value="吵架">😤 吵架</option>
+                    <option value="不满">😞 不满</option>
+                    <option value="误会">🤔 误会</option>
+                    <option value="感动时刻">🥰 感动时刻</option>
+                    <option value="深度沟通">💬 深度沟通</option>
+                </select>
+            </div>
+
+            <div style="margin-bottom:14px;">
+                <label style="font-size:13px; font-weight:600; color:#7a5a66;">关联标签</label>
+                <select id="reviewTag" style="width:100%; padding:10px 12px; border-radius:12px; border:1.5px solid #f0dce2; font-size:14px; background:#fff; margin-top:4px;">
+                    <option value="信任">🤝 信任</option>
+                    <option value="沟通">💬 沟通</option>
+                    <option value="安全感">🛡️ 安全感</option>
+                    <option value="陪伴">🤗 陪伴</option>
+                    <option value="未来规划">🔮 未来规划</option>
+                    <option value="其他">📌 其他</option>
+                </select>
+            </div>
+
+            <!-- 2. 客观事实 -->
+            <div style="margin-bottom:14px;">
+                <label style="font-size:13px; font-weight:600; color:#7a5a66;">发生了什么？</label>
+                <textarea id="reviewFact" rows="3" style="width:100%; padding:10px 12px; border-radius:12px; border:1.5px solid #f0dce2; font-size:14px; background:#fff; margin-top:4px; font-family:inherit; resize:vertical;" placeholder="不加评判，只写看到的言行…"></textarea>
+            </div>
+
+            <!-- 3. 情绪与需求 -->
+            <div style="margin-bottom:14px;">
+                <label style="font-size:13px; font-weight:600; color:#7a5a66;">我当时的感受是？</label>
+                <textarea id="reviewFeeling" rows="2" style="width:100%; padding:10px 12px; border-radius:12px; border:1.5px solid #f0dce2; font-size:14px; background:#fff; margin-top:4px; font-family:inherit; resize:vertical;" placeholder="表层情绪：生气/委屈。深层需求：其实是希望被在意…"></textarea>
+            </div>
+
+            <!-- 4. 成长与约定 -->
+            <div style="margin-bottom:20px;">
+                <label style="font-size:13px; font-weight:600; color:#7a5a66;">下次我们可以怎么做？</label>
+                <textarea id="reviewGrowth" rows="2" style="width:100%; padding:10px 12px; border-radius:12px; border:1.5px solid #f0dce2; font-size:14px; background:#fff; margin-top:4px; font-family:inherit; resize:vertical;" placeholder="约定一个小的改变…"></textarea>
+            </div>
+
+            <button onclick="submitReview()" style="width:100%; padding:12px; border:none; border-radius:16px; background:linear-gradient(135deg,#ff9aae,#ffb6c9); color:#fff; font-weight:600; font-size:16px; cursor:pointer;">💾 保存复盘</button>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js">
     </script>
-
     <script>
         // ============================================================
-        //  🔑 修改这三行！！！
+        // 🔑 修改这三行！！！
         // ============================================================
         var SUPABASE_URL = 'https://fsmgeesifwqfhpdndzmg.supabase.co';
         var SUPABASE_KEY = 'sb_publishable_t2AMEoq4SSfwXaGUSQ6opA_UBUuqwfs';
         var START_DATE = '2026-06-10';
 
-        // ============================================================
-        //  初始化
-        // ============================================================
         var supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
+        // ---- 工具函数 ----
         function formatDate(d) {
-            return d.getFullYear() + '年' + String(d.getMonth() + 1).padStart(2, '0') + '月' + String(d.getDate()).padStart(2, '0') + '日';
+            return d.getFullYear() + '年' + String(d.getMonth() + 1).padStart(2, '0') + '月' + String(d.getDate()).padStart(2,
+                '0') + '日';
         }
 
         function getWeekday(d) {
@@ -877,10 +976,12 @@
         }
 
         function formatDateKey(d) {
-            return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+            return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2,
+                '0');
         }
 
         function escapeHtml(text) {
+            if (!text) return '';
             var div = document.createElement('div');
             div.textContent = text;
             return div.innerHTML;
@@ -891,9 +992,9 @@
             return map[tag] || 0;
         }
 
-        function getTagEmoji(tag) {
-            var map = { '重要紧急': '🔥', '重要不紧急': '🌱', '不重要紧急': '⏰', '不重要不紧急': '☁️' };
-            return map[tag] || '📌';
+        function getCategoryEmoji(cat) {
+            var map = { '日常': '📌', '电影': '🎬', '心愿': '✨', '购物': '🛒', '书单': '📚', '旅行': '✈️' };
+            return map[cat] || '📌';
         }
 
         function getFullImageUrl(url) {
@@ -908,102 +1009,171 @@
         document.getElementById('todayDate').textContent = formatDate(today);
         document.getElementById('todayWeekday').textContent = getWeekday(today);
         var start = new Date(START_DATE);
-        var diff = daysBetween(start, today);
-        document.getElementById('daysCount').textContent = Math.max(0, diff);
+        document.getElementById('daysCount').textContent = Math.max(0, daysBetween(start, today));
         var todayKey = formatDateKey(today);
 
+        // ---- 全局数据缓存 ----
+        var allTodos = [];
+
         // ============================================================
-        //  待办
+        // 1. 待办（含搜索 + 分类筛选）
         // ============================================================
-        var todoList = document.getElementById('todoList');
-        var todoCount = document.getElementById('todoCount');
+        var currentFilter = 'all';
+        var currentSearch = '';
+
+        function filterTodos(todos) {
+            return todos.filter(function(t) {
+                if (currentFilter !== 'all' && t.category !== currentFilter) return false;
+                if (currentSearch.trim() !== '' && t.title.indexOf(currentSearch.trim()) === -1) return false;
+                return true;
+            });
+        }
+
+        function renderTodoList(todos) {
+            var container = document.getElementById('todoList');
+            var countBadge = document.getElementById('todoCount');
+            var filtered = filterTodos(todos);
+
+            if (filtered.length === 0) {
+                container.innerHTML = '<div class="todo-empty"><span>🎉</span>没有匹配的待办</div>';
+                countBadge.textContent = '0';
+                return;
+            }
+
+            var html = '';
+            filtered.forEach(function(t) {
+                var catEmoji = getCategoryEmoji(t.category);
+                var tagDisplay = t.tag || '未分类';
+                html += `
+                        <div class="todo-item">
+                            <div class="todo-checkbox" onclick="toggleTodo('${t.id}')"></div>
+                            <span class="todo-text">${escapeHtml(t.title)}</span>
+                            <span class="todo-category">${catEmoji} ${escapeHtml(t.category || '日常')}</span>
+                            <span class="todo-tag">${escapeHtml(tagDisplay)}</span>
+                            <button class="todo-delete" onclick="deleteTodo('${t.id}')">✕</button>
+                        </div>
+                    `;
+            });
+            container.innerHTML = html;
+            countBadge.textContent = filtered.length;
+        }
 
         async function loadTodos() {
             try {
-                var result = await supabase.from('todos').select('*').eq('date', todayKey).order('created_at', { ascending: false });
-                if (result.error) { todoList.innerHTML = '<div class="todo-empty">⚠️ 加载失败</div>'; return; }
-                var data = result.data;
-                if (!data || data.length === 0) {
-                    todoList.innerHTML = '<div class="todo-empty">✨ 今天没有待办，轻松的一天 ~</div>';
-                    todoCount.textContent = '0';
-                    return;
-                }
-                var html = '';
-                var undone = 0;
-                data.forEach(function(t) {
-                    if (!t.done) undone++;
-                    var doneClass = t.done ? 'done' : '';
-                    var textClass = t.done ? 'done-text' : '';
-                    html += `
-                            <div class="todo-item">
-                                <div class="todo-checkbox ${doneClass}" onclick="toggleTodo('${t.id}')"></div>
-                                <span class="todo-text ${textClass}">${escapeHtml(t.title)}</span>
-                                <span class="todo-tag">${escapeHtml(t.tag || '未分类')}</span>
-                                <button class="todo-delete" onclick="deleteTodo('${t.id}')">✕</button>
-                            </div>
-                        `;
-                });
-                todoList.innerHTML = html;
-                todoCount.textContent = undone;
+                var result = await supabase.from('todos').select('*').eq('done', false).order('created_at', { ascending: false });
+                if (result.error) { return; }
+                allTodos = result.data || [];
+                renderTodoList(allTodos);
                 loadMatrix();
-                loadCalendarTodos(selectedDateKey || todayKey);
-            } catch (e) { todoList.innerHTML = '<div class="todo-empty">⚠️ 加载失败</div>'; }
+                renderCalendar(currentYear, currentMonth);
+            } catch (e) { /* ignore */ }
         }
 
-        async function toggleTodo(id) {
+        document.getElementById('searchInput').addEventListener('input', function() {
+            currentSearch = this.value;
+            renderTodoList(allTodos);
+        });
+
+        document.querySelectorAll('.filter-tag').forEach(function(tag) {
+            tag.addEventListener('click', function() {
+                document.querySelectorAll('.filter-tag').forEach(function(t) { t.classList.remove('active'); });
+                this.classList.add('active');
+                currentFilter = this.dataset.filter;
+                renderTodoList(allTodos);
+            });
+        });
+
+        window.toggleTodo = async function(id) {
             try {
                 var result = await supabase.from('todos').select('done').eq('id', id).single();
                 if (result.error) { alert('操作失败'); return; }
                 await supabase.from('todos').update({ done: !result.data.done }).eq('id', id);
                 await loadTodos();
-                renderCalendar(currentYear, currentMonth);
             } catch (e) { alert('操作失败'); }
         }
 
-        async function deleteTodo(id) {
-            if (!confirm('确定要删除这条待办吗？')) return;
-            try { await supabase.from('todos').delete().eq('id', id); await loadTodos(); renderCalendar(currentYear, currentMonth); } catch (e) { alert('删除失败'); }
+        window.deleteTodo = async function(id) {
+            if (!confirm('确定要删除吗？')) return;
+            try { await supabase.from('todos').delete().eq('id', id);
+                await loadTodos(); } catch (e) { alert('删除失败'); }
         }
 
         async function addTodo() {
             var input = document.getElementById('todoInput');
+            var category = document.getElementById('todoCategory').value;
             var tag = document.getElementById('todoTag').value;
             var title = input.value.trim();
             if (!title) { alert('请输入内容 📝'); return; }
             try {
-                await supabase.from('todos').insert({ title: title, tag: tag, done: false, date: todayKey, created_by: '我' });
+                await supabase.from('todos').insert({
+                    title: title,
+                    tag: tag,
+                    category: category,
+                    done: false,
+                    date: todayKey,
+                    created_by: '我'
+                });
                 input.value = '';
                 await loadTodos();
-                renderCalendar(currentYear, currentMonth);
             } catch (e) { alert('添加失败'); }
         }
 
         document.getElementById('addBtn').addEventListener('click', addTodo);
-        document.getElementById('todoInput').addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') addTodo();
+        document.getElementById('todoInput').addEventListener('keydown', function(e) { if (e.key === 'Enter') addTodo(); });
+
+        // ============================================================
+        // 2. 四象限
+        // ============================================================
+        var quadrantFilters = { 1: 'all', 2: 'all', 3: 'all', 4: 'all' };
+
+        function getQuadrantItems(quadrant) {
+            var filtered = allTodos.filter(function(t) {
+                if (getQuadrant(t.tag) !== quadrant) return false;
+                var filter = quadrantFilters[quadrant];
+                if (filter !== 'all' && t.category !== filter) return false;
+                return true;
+            });
+            return filtered;
+        }
+
+        function renderQuadrant(quadrant) {
+            var container = document.getElementById('q' + quadrant + '-list');
+            var items = getQuadrantItems(quadrant);
+            if (items.length === 0) {
+                container.innerHTML = '<div class="quadrant-empty">—</div>';
+                return;
+            }
+            var html = '';
+            items.forEach(function(t) {
+                html += `
+                        <div class="quadrant-item">
+                            <span class="q-dot">●</span>
+                            <span style="flex:1;">${escapeHtml(t.title)}</span>
+                            <span style="font-size:10px;color:#b58a95;">${getCategoryEmoji(t.category)}</span>
+                            <button onclick="toggleTodo('${t.id}')" style="background:none;border:none;color:#4CAF50;cursor:pointer;font-size:14px;" title="完成">✅</button>
+                            <button onclick="deleteTodo('${t.id}')" style="background:none;border:none;color:#d4b8c2;cursor:pointer;font-size:14px;" title="删除">✕</button>
+                        </div>
+                    `;
+            });
+            container.innerHTML = html;
+        }
+
+        function loadMatrix() {
+            for (var i = 1; i <= 4; i++) {
+                renderQuadrant(i);
+            }
+        }
+
+        document.querySelectorAll('.quadrant-filter').forEach(function(select) {
+            select.addEventListener('change', function() {
+                var q = parseInt(this.dataset.quadrant);
+                quadrantFilters[q] = this.value;
+                renderQuadrant(q);
+            });
         });
 
         // ============================================================
-        //  四象限
-        // ============================================================
-        async function loadMatrix() {
-            try {
-                var result = await supabase.from('todos').select('*').eq('date', todayKey).eq('done', false);
-                if (result.error || !result.data) return;
-                var data = result.data;
-                var quadrants = { 1: [], 2: [], 3: [], 4: [] };
-                data.forEach(function(t) { var q = getQuadrant(t.tag); if (q > 0) quadrants[q].push(t); });
-                for (var i = 1; i <= 4; i++) {
-                    var container = document.getElementById('q' + i + '-list');
-                    var items = quadrants[i];
-                    container.innerHTML = items.length === 0 ? '<div class="quadrant-empty">—</div>' :
-                        items.map(function(t) { return '<div class="quadrant-item"><span class="q-dot">●</span>' + escapeHtml(t.title) + '</div>'; }).join('');
-                }
-            } catch (e) { /* ignore */ }
-        }
-
-        // ============================================================
-        //  日历
+        // 3. 日历
         // ============================================================
         var currentYear = today.getFullYear();
         var currentMonth = today.getMonth();
@@ -1018,7 +1188,8 @@
             var weekdays = ['日', '一', '二', '三', '四', '五', '六'];
             var html = '';
             weekdays.forEach(function(w) { html += '<div class="weekday">' + w + '</div>'; });
-            for (var i = firstDay - 1; i >= 0; i--) { html += '<div class="day other-month">' + (daysInPrevMonth - i) + '</div>'; }
+            for (var i = firstDay - 1; i >= 0; i--) { html += '<div class="day other-month">' + (daysInPrevMonth - i) +
+                '</div>'; }
             var todayStr = formatDateKey(today);
             for (var d = 1; d <= daysInMonth; d++) {
                 var dateKey = year + '-' + String(month + 1).padStart(2, '0') + '-' + String(d).padStart(2, '0');
@@ -1030,7 +1201,6 @@
             grid.innerHTML = html;
             loadCalendarTodos(selectedDateKey);
             markCalendarDates(year, month);
-            // 更新日期标签
             var label = document.getElementById('calendarSelectedDateLabel');
             if (selectedDateKey) {
                 var parts = selectedDateKey.split('-');
@@ -1042,7 +1212,8 @@
 
         async function markCalendarDates(year, month) {
             var startDate = year + '-' + String(month + 1).padStart(2, '0') + '-01';
-            var endDate = year + '-' + String(month + 1).padStart(2, '0') + '-' + String(new Date(year, month + 1, 0).getDate()).padStart(2, '0');
+            var endDate = year + '-' + String(month + 1).padStart(2, '0') + '-' + String(new Date(year, month + 1, 0)
+                .getDate()).padStart(2, '0');
             try {
                 var result = await supabase.from('todos').select('date').gte('date', startDate).lte('date', endDate);
                 if (result.error || !result.data) return;
@@ -1051,13 +1222,14 @@
                 var days = document.querySelectorAll('.calendar-grid .day:not(.other-month)');
                 days.forEach(function(el) {
                     var d = parseInt(el.textContent);
-                    var dateKey = year + '-' + String(month + 1).padStart(2, '0') + '-' + String(d).padStart(2, '0');
+                    var dateKey = year + '-' + String(month + 1).padStart(2, '0') + '-' + String(d).padStart(2,
+                    '0');
                     if (dates[dateKey]) el.classList.add('has-todo');
                 });
             } catch (e) { /* ignore */ }
         }
 
-        function selectDate(dateKey) {
+        window.selectDate = function(dateKey) {
             selectedDateKey = dateKey;
             renderCalendar(currentYear, currentMonth);
             loadCalendarTodos(dateKey);
@@ -1085,53 +1257,26 @@
                         `;
                 });
                 container.innerHTML = html;
-            } catch (e) { container.innerHTML = '<div class="todo-empty">⚠️ 加载失败</div>'; }
+            } catch (e) {
+                container.innerHTML = '<div class="todo-empty">⚠️ 加载失败</div>';
+            }
         }
 
         document.getElementById('prevMonth').addEventListener('click', function() {
             currentMonth--;
-            if (currentMonth < 0) { currentMonth = 11; currentYear--; }
+            if (currentMonth < 0) { currentMonth = 11;
+                currentYear--; }
             renderCalendar(currentYear, currentMonth);
         });
-
         document.getElementById('nextMonth').addEventListener('click', function() {
             currentMonth++;
-            if (currentMonth > 11) { currentMonth = 0; currentYear++; }
+            if (currentMonth > 11) { currentMonth = 0;
+                currentYear++; }
             renderCalendar(currentYear, currentMonth);
         });
 
         // ============================================================
-        //  日历页面快速添加待办
-        // ============================================================
-        var calendarTodoInput = document.getElementById('calendarTodoInput');
-        var calendarTodoTag = document.getElementById('calendarTodoTag');
-        var calendarAddBtn = document.getElementById('calendarAddBtn');
-
-        async function addCalendarTodo() {
-            var title = calendarTodoInput.value.trim();
-            var tag = calendarTodoTag.value;
-            if (!title) { alert('请输入待办内容 📝'); return; }
-            try {
-                await supabase.from('todos').insert({
-                    title: title,
-                    tag: tag,
-                    done: false,
-                    date: selectedDateKey || todayKey,
-                    created_by: '我'
-                });
-                calendarTodoInput.value = '';
-                await loadTodos();
-                renderCalendar(currentYear, currentMonth);
-            } catch (e) { alert('添加失败'); }
-        }
-
-        calendarAddBtn.addEventListener('click', addCalendarTodo);
-        calendarTodoInput.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') addCalendarTodo();
-        });
-
-        // ============================================================
-        //  相册
+        // 4. 相册
         // ============================================================
         var photoInput = document.getElementById('photoInput');
         var photoTimeline = document.getElementById('photoTimeline');
@@ -1165,7 +1310,7 @@
             document.body.style.overflow = 'hidden';
         }
 
-        function closeLightbox() {
+        window.closeLightbox = function() {
             document.getElementById('lightbox').classList.remove('show');
             document.body.style.overflow = '';
         }
@@ -1199,14 +1344,11 @@
                     var imgHtml = imageUrl ?
                         '<img src="' + imageUrl + '" alt="照片" loading="lazy" onerror="this.parentElement.innerHTML=\'📷\'" />' :
                         '📷';
-                    var captionHtml = p.caption ?
-                        '<span class="caption">' + escapeHtml(p.caption) + '</span>' :
-                        '<span class="caption-placeholder">无说明 💭</span>';
                     html += `
                             <div class="photo-card" onclick="openLightbox('${imageUrl}')">
                                 <div class="thumb">${imgHtml}</div>
                                 <div class="info">
-                                    ${captionHtml}
+                                    <div class="caption">${escapeHtml(p.caption || '无说明 💭')}</div>
                                     <div class="meta">
                                         <span class="who">${escapeHtml(p.created_by || '我')}</span>
                                         ${p.created_at ? ' · ' + new Date(p.created_at).toLocaleTimeString('zh-CN', {hour:'2-digit', minute:'2-digit'}) : ''}
@@ -1244,13 +1386,111 @@
                 this.value = '';
             }
         });
-
         document.getElementById('photoUploadArea').addEventListener('click', function() {
             photoInput.click();
         });
 
         // ============================================================
-        //  导航
+        // 5. 复盘（结构化）
+        // ============================================================
+        var reviewModal = document.getElementById('reviewModal');
+
+        function openReviewModal() {
+            reviewModal.classList.add('show');
+            document.getElementById('reviewFact').value = '';
+            document.getElementById('reviewFeeling').value = '';
+            document.getElementById('reviewGrowth').value = '';
+            document.getElementById('reviewType').value = '吵架';
+            document.getElementById('reviewTag').value = '信任';
+        }
+
+        function closeReviewModal() {
+            reviewModal.classList.remove('show');
+        }
+        document.getElementById('openReviewBtn').addEventListener('click', openReviewModal);
+        reviewModal.addEventListener('click', function(e) {
+            if (e.target === this) closeReviewModal();
+        });
+
+        window.submitReview = async function() {
+            var type = document.getElementById('reviewType').value;
+            var tag = document.getElementById('reviewTag').value;
+            var fact = document.getElementById('reviewFact').value.trim();
+            var feeling = document.getElementById('reviewFeeling').value.trim();
+            var growth = document.getElementById('reviewGrowth').value.trim();
+
+            if (!fact && !feeling && !growth) {
+                alert('至少填写一个字段吧 📝');
+                return;
+            }
+
+            var content = '';
+            if (fact) content += '【发生了什么】\n' + fact + '\n\n';
+            if (feeling) content += '【我的感受】\n' + feeling + '\n\n';
+            if (growth) content += '【下次怎么做】\n' + growth;
+
+            try {
+                await supabase.from('reviews').insert({
+                    title: type + ' - ' + tag,
+                    content: content,
+                    type: type,
+                    tag: tag,
+                    fact: fact,
+                    feeling: feeling,
+                    growth: growth,
+                    created_by: '我'
+                });
+                closeReviewModal();
+                loadReviews();
+            } catch (e) {
+                alert('保存失败: ' + e.message);
+            }
+        }
+
+        async function loadReviews() {
+            var container = document.getElementById('reviewList');
+            try {
+                var result = await supabase.from('reviews').select('*').order('created_at', { ascending: false });
+                if (result.error || !result.data || result.data.length === 0) {
+                    container.innerHTML = '<div class="todo-empty"><span>📖</span>还没有复盘记录...</div>';
+                    return;
+                }
+                var html = '';
+                result.data.forEach(function(r) {
+                    var dateStr = r.created_at ? new Date(r.created_at).toLocaleDateString('zh-CN') : '未知日期';
+                    var typeEmoji = { '吵架': '😤', '不满': '😞', '误会': '🤔', '感动时刻': '🥰', '深度沟通': '💬' };
+                    var tagEmoji = { '信任': '🤝', '沟通': '💬', '安全感': '🛡️', '陪伴': '🤗', '未来规划': '🔮', '其他': '📌' };
+                    html += `
+                            <div class="review-card">
+                                <div class="review-header">
+                                    <span class="review-title">${escapeHtml(r.title)}</span>
+                                    <div class="review-meta">
+                                        <span class="review-type">${typeEmoji[r.type] || '📌'} ${escapeHtml(r.type || '')}</span>
+                                        <span class="review-tag">${tagEmoji[r.tag] || '📌'} ${escapeHtml(r.tag || '')}</span>
+                                        <button class="review-delete" onclick="deleteReview('${r.id}')">✕</button>
+                                    </div>
+                                </div>
+                                <div style="font-size:11px; color:#b58a95; margin-bottom:6px;">${dateStr}</div>
+                                ${r.fact ? `<div class="review-section"><div class="review-section-label">📌 发生了什么</div><div class="review-section-content">${escapeHtml(r.fact)}</div></div>` : ''}
+                                ${r.feeling ? `<div class="review-section"><div class="review-section-label">💭 我的感受</div><div class="review-section-content">${escapeHtml(r.feeling)}</div></div>` : ''}
+                                ${r.growth ? `<div class="review-section"><div class="review-section-label">🌱 下次怎么做</div><div class="review-section-content">${escapeHtml(r.growth)}</div></div>` : ''}
+                            </div>
+                        `;
+                });
+                container.innerHTML = html;
+            } catch (e) {
+                container.innerHTML = '<div class="todo-empty"><span>⚠️</span>加载失败</div>';
+            }
+        }
+
+        window.deleteReview = async function(id) {
+            if (!confirm('确定要删除这条复盘吗？')) return;
+            try { await supabase.from('reviews').delete().eq('id', id);
+                loadReviews(); } catch (e) { alert('删除失败'); }
+        }
+
+        // ============================================================
+        // 导航切换
         // ============================================================
         document.querySelectorAll('.nav-tab').forEach(function(tab) {
             tab.addEventListener('click', function() {
@@ -1262,7 +1502,7 @@
         });
 
         // ============================================================
-        //  初始化 Storage
+        // 初始化 Storage & 数据
         // ============================================================
         async function initStorage() {
             try {
@@ -1280,15 +1520,37 @@
             } catch (e) { console.log('存储初始化:', e.message); }
         }
 
-        // ============================================================
-        //  启动
-        // ============================================================
+        // 检查 reviews 表是否存在
+        async function initReviewsTable() {
+            try {
+                var { error } = await supabase.from('reviews').select('id').limit(1);
+                if (error && error.message && error.message.includes('relation "reviews" does not exist')) {
+                    alert('⚠️ 请到 Supabase SQL Editor 运行以下代码创建 reviews 表：\n\n' +
+                        'CREATE TABLE IF NOT EXISTS reviews (\n' +
+                        '  id BIGSERIAL PRIMARY KEY,\n' +
+                        '  title TEXT NOT NULL,\n' +
+                        '  content TEXT,\n' +
+                        '  type TEXT,\n' +
+                        '  tag TEXT,\n' +
+                        '  fact TEXT,\n' +
+                        '  feeling TEXT,\n' +
+                        '  growth TEXT,\n' +
+                        '  created_by TEXT DEFAULT \'我\',\n' +
+                        '  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()\n' +
+                        ');\n\n' +
+                        'ALTER TABLE reviews REPLICA IDENTITY FULL;');
+                }
+            } catch (e) { /* ignore */ }
+            loadReviews();
+        }
+
+        // 启动！
         renderCalendar(currentYear, currentMonth);
         loadTodos();
         loadPhotos();
         initStorage();
-        console.log('💕 恋爱空间已启动！');
+        initReviewsTable();
+        console.log('💕 完整版恋爱空间已启动！');
     </script>
-
 </body>
 </html>
