@@ -4,6 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>💕 我们的恋爱空间</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23ff9aae'/%3E%3Ctext x='50' y='68' font-size='50' text-anchor='middle' fill='white'%3E❤️%3C/text%3E%3C/svg%3E">
     <style>
         /* --- 重置 & 全局 --- */
         * {
@@ -872,15 +874,11 @@
         </div>
 
         <!-- ========================================================== -->
-        <!-- 页面5：复盘（结构化） -->
+        <!-- 页面5：复盘 -->
         <!-- ========================================================== -->
         <div class="page" id="page-review">
             <div class="section-title">💭 复盘日记</div>
-
-            <!-- 新增复盘按钮 -->
             <button class="btn-add" id="openReviewBtn" style="width:100%; margin-bottom:16px;">📝 记录一次复盘</button>
-
-            <!-- 复盘列表 -->
             <div id="reviewList">
                 <div class="todo-empty"><span>📖</span>还没有复盘记录...</div>
             </div>
@@ -895,7 +893,7 @@
         <img id="lightboxImage" src="" alt="查看图片" />
     </div>
 
-    <!-- 复盘弹窗（引导式表单） -->
+    <!-- 复盘弹窗 -->
     <div class="lightbox-overlay" id="reviewModal" style="background:rgba(0,0,0,0.6); align-items:center; justify-content:center;">
         <div style="max-width:380px; width:100%; background:#fff; border-radius:28px; padding:24px 20px; max-height:90vh; overflow-y:auto;">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
@@ -903,7 +901,6 @@
                 <button onclick="closeReviewModal()" style="background:none; border:none; font-size:24px; color:#b58a95; cursor:pointer;">✕</button>
             </div>
 
-            <!-- 1. 基础信息 -->
             <div style="margin-bottom:14px;">
                 <label style="font-size:13px; font-weight:600; color:#7a5a66;">事件类型</label>
                 <select id="reviewType" style="width:100%; padding:10px 12px; border-radius:12px; border:1.5px solid #f0dce2; font-size:14px; background:#fff; margin-top:4px;">
@@ -927,19 +924,16 @@
                 </select>
             </div>
 
-            <!-- 2. 客观事实 -->
             <div style="margin-bottom:14px;">
                 <label style="font-size:13px; font-weight:600; color:#7a5a66;">发生了什么？</label>
                 <textarea id="reviewFact" rows="3" style="width:100%; padding:10px 12px; border-radius:12px; border:1.5px solid #f0dce2; font-size:14px; background:#fff; margin-top:4px; font-family:inherit; resize:vertical;" placeholder="不加评判，只写看到的言行…"></textarea>
             </div>
 
-            <!-- 3. 情绪与需求 -->
             <div style="margin-bottom:14px;">
                 <label style="font-size:13px; font-weight:600; color:#7a5a66;">我当时的感受是？</label>
                 <textarea id="reviewFeeling" rows="2" style="width:100%; padding:10px 12px; border-radius:12px; border:1.5px solid #f0dce2; font-size:14px; background:#fff; margin-top:4px; font-family:inherit; resize:vertical;" placeholder="表层情绪：生气/委屈。深层需求：其实是希望被在意…"></textarea>
             </div>
 
-            <!-- 4. 成长与约定 -->
             <div style="margin-bottom:20px;">
                 <label style="font-size:13px; font-weight:600; color:#7a5a66;">下次我们可以怎么做？</label>
                 <textarea id="reviewGrowth" rows="2" style="width:100%; padding:10px 12px; border-radius:12px; border:1.5px solid #f0dce2; font-size:14px; background:#fff; margin-top:4px; font-family:inherit; resize:vertical;" placeholder="约定一个小的改变…"></textarea>
@@ -1016,7 +1010,7 @@
         var allTodos = [];
 
         // ============================================================
-        // 1. 待办（含搜索 + 分类筛选）
+        // 1. 待办
         // ============================================================
         var currentFilter = 'all';
         var currentSearch = '';
@@ -1045,14 +1039,14 @@
                 var catEmoji = getCategoryEmoji(t.category);
                 var tagDisplay = t.tag || '未分类';
                 html += `
-                        <div class="todo-item">
-                            <div class="todo-checkbox" onclick="toggleTodo('${t.id}')"></div>
-                            <span class="todo-text">${escapeHtml(t.title)}</span>
-                            <span class="todo-category">${catEmoji} ${escapeHtml(t.category || '日常')}</span>
-                            <span class="todo-tag">${escapeHtml(tagDisplay)}</span>
-                            <button class="todo-delete" onclick="deleteTodo('${t.id}')">✕</button>
-                        </div>
-                    `;
+                            <div class="todo-item">
+                                <div class="todo-checkbox" onclick="toggleTodo('${t.id}')"></div>
+                                <span class="todo-text">${escapeHtml(t.title)}</span>
+                                <span class="todo-category">${catEmoji} ${escapeHtml(t.category || '日常')}</span>
+                                <span class="todo-tag">${escapeHtml(tagDisplay)}</span>
+                                <button class="todo-delete" onclick="deleteTodo('${t.id}')">✕</button>
+                            </div>
+                        `;
             });
             container.innerHTML = html;
             countBadge.textContent = filtered.length;
@@ -1146,14 +1140,14 @@
             var html = '';
             items.forEach(function(t) {
                 html += `
-                        <div class="quadrant-item">
-                            <span class="q-dot">●</span>
-                            <span style="flex:1;">${escapeHtml(t.title)}</span>
-                            <span style="font-size:10px;color:#b58a95;">${getCategoryEmoji(t.category)}</span>
-                            <button onclick="toggleTodo('${t.id}')" style="background:none;border:none;color:#4CAF50;cursor:pointer;font-size:14px;" title="完成">✅</button>
-                            <button onclick="deleteTodo('${t.id}')" style="background:none;border:none;color:#d4b8c2;cursor:pointer;font-size:14px;" title="删除">✕</button>
-                        </div>
-                    `;
+                            <div class="quadrant-item">
+                                <span class="q-dot">●</span>
+                                <span style="flex:1;">${escapeHtml(t.title)}</span>
+                                <span style="font-size:10px;color:#b58a95;">${getCategoryEmoji(t.category)}</span>
+                                <button onclick="toggleTodo('${t.id}')" style="background:none;border:none;color:#4CAF50;cursor:pointer;font-size:14px;" title="完成">✅</button>
+                                <button onclick="deleteTodo('${t.id}')" style="background:none;border:none;color:#d4b8c2;cursor:pointer;font-size:14px;" title="删除">✕</button>
+                            </div>
+                        `;
             });
             container.innerHTML = html;
         }
@@ -1248,13 +1242,13 @@
                     var doneClass = t.done ? 'done' : '';
                     var textClass = t.done ? 'done-text' : '';
                     html += `
-                            <div class="todo-item">
-                                <div class="todo-checkbox ${doneClass}" onclick="toggleTodo('${t.id}')"></div>
-                                <span class="todo-text ${textClass}">${escapeHtml(t.title)}</span>
-                                <span class="todo-tag">${escapeHtml(t.tag || '未分类')}</span>
-                                <button class="todo-delete" onclick="deleteTodo('${t.id}')">✕</button>
-                            </div>
-                        `;
+                                <div class="todo-item">
+                                    <div class="todo-checkbox ${doneClass}" onclick="toggleTodo('${t.id}')"></div>
+                                    <span class="todo-text ${textClass}">${escapeHtml(t.title)}</span>
+                                    <span class="todo-tag">${escapeHtml(t.tag || '未分类')}</span>
+                                    <button class="todo-delete" onclick="deleteTodo('${t.id}')">✕</button>
+                                </div>
+                            `;
                 });
                 container.innerHTML = html;
             } catch (e) {
@@ -1345,18 +1339,18 @@
                         '<img src="' + imageUrl + '" alt="照片" loading="lazy" onerror="this.parentElement.innerHTML=\'📷\'" />' :
                         '📷';
                     html += `
-                            <div class="photo-card" onclick="openLightbox('${imageUrl}')">
-                                <div class="thumb">${imgHtml}</div>
-                                <div class="info">
-                                    <div class="caption">${escapeHtml(p.caption || '无说明 💭')}</div>
-                                    <div class="meta">
-                                        <span class="who">${escapeHtml(p.created_by || '我')}</span>
-                                        ${p.created_at ? ' · ' + new Date(p.created_at).toLocaleTimeString('zh-CN', {hour:'2-digit', minute:'2-digit'}) : ''}
+                                <div class="photo-card" onclick="openLightbox('${imageUrl}')">
+                                    <div class="thumb">${imgHtml}</div>
+                                    <div class="info">
+                                        <div class="caption">${escapeHtml(p.caption || '无说明 💭')}</div>
+                                        <div class="meta">
+                                            <span class="who">${escapeHtml(p.created_by || '我')}</span>
+                                            ${p.created_at ? ' · ' + new Date(p.created_at).toLocaleTimeString('zh-CN', {hour:'2-digit', minute:'2-digit'}) : ''}
+                                        </div>
                                     </div>
+                                    <button class="photo-delete-btn" onclick="event.stopPropagation();deletePhoto('${p.id}')">✕</button>
                                 </div>
-                                <button class="photo-delete-btn" onclick="event.stopPropagation();deletePhoto('${p.id}')">✕</button>
-                            </div>
-                        `;
+                            `;
                 });
                 html += '</div>';
                 photoTimeline.innerHTML = html;
@@ -1391,7 +1385,7 @@
         });
 
         // ============================================================
-        // 5. 复盘（结构化）
+        // 5. 复盘
         // ============================================================
         var reviewModal = document.getElementById('reviewModal');
 
@@ -1424,15 +1418,10 @@
                 return;
             }
 
-            var content = '';
-            if (fact) content += '【发生了什么】\n' + fact + '\n\n';
-            if (feeling) content += '【我的感受】\n' + feeling + '\n\n';
-            if (growth) content += '【下次怎么做】\n' + growth;
-
             try {
                 await supabase.from('reviews').insert({
                     title: type + ' - ' + tag,
-                    content: content,
+                    content: fact + '\n\n' + feeling + '\n\n' + growth,
                     type: type,
                     tag: tag,
                     fact: fact,
@@ -1461,21 +1450,21 @@
                     var typeEmoji = { '吵架': '😤', '不满': '😞', '误会': '🤔', '感动时刻': '🥰', '深度沟通': '💬' };
                     var tagEmoji = { '信任': '🤝', '沟通': '💬', '安全感': '🛡️', '陪伴': '🤗', '未来规划': '🔮', '其他': '📌' };
                     html += `
-                            <div class="review-card">
-                                <div class="review-header">
-                                    <span class="review-title">${escapeHtml(r.title)}</span>
-                                    <div class="review-meta">
-                                        <span class="review-type">${typeEmoji[r.type] || '📌'} ${escapeHtml(r.type || '')}</span>
-                                        <span class="review-tag">${tagEmoji[r.tag] || '📌'} ${escapeHtml(r.tag || '')}</span>
-                                        <button class="review-delete" onclick="deleteReview('${r.id}')">✕</button>
+                                <div class="review-card">
+                                    <div class="review-header">
+                                        <span class="review-title">${escapeHtml(r.title)}</span>
+                                        <div class="review-meta">
+                                            <span class="review-type">${typeEmoji[r.type] || '📌'} ${escapeHtml(r.type || '')}</span>
+                                            <span class="review-tag">${tagEmoji[r.tag] || '📌'} ${escapeHtml(r.tag || '')}</span>
+                                            <button class="review-delete" onclick="deleteReview('${r.id}')">✕</button>
+                                        </div>
                                     </div>
+                                    <div style="font-size:11px; color:#b58a95; margin-bottom:6px;">${dateStr}</div>
+                                    ${r.fact ? `<div class="review-section"><div class="review-section-label">📌 发生了什么</div><div class="review-section-content">${escapeHtml(r.fact)}</div></div>` : ''}
+                                    ${r.feeling ? `<div class="review-section"><div class="review-section-label">💭 我的感受</div><div class="review-section-content">${escapeHtml(r.feeling)}</div></div>` : ''}
+                                    ${r.growth ? `<div class="review-section"><div class="review-section-label">🌱 下次怎么做</div><div class="review-section-content">${escapeHtml(r.growth)}</div></div>` : ''}
                                 </div>
-                                <div style="font-size:11px; color:#b58a95; margin-bottom:6px;">${dateStr}</div>
-                                ${r.fact ? `<div class="review-section"><div class="review-section-label">📌 发生了什么</div><div class="review-section-content">${escapeHtml(r.fact)}</div></div>` : ''}
-                                ${r.feeling ? `<div class="review-section"><div class="review-section-label">💭 我的感受</div><div class="review-section-content">${escapeHtml(r.feeling)}</div></div>` : ''}
-                                ${r.growth ? `<div class="review-section"><div class="review-section-label">🌱 下次怎么做</div><div class="review-section-content">${escapeHtml(r.growth)}</div></div>` : ''}
-                            </div>
-                        `;
+                            `;
                 });
                 container.innerHTML = html;
             } catch (e) {
@@ -1502,7 +1491,7 @@
         });
 
         // ============================================================
-        // 初始化 Storage & 数据
+        // 初始化
         // ============================================================
         async function initStorage() {
             try {
@@ -1520,7 +1509,6 @@
             } catch (e) { console.log('存储初始化:', e.message); }
         }
 
-        // 检查 reviews 表是否存在
         async function initReviewsTable() {
             try {
                 var { error } = await supabase.from('reviews').select('id').limit(1);
